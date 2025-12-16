@@ -1,0 +1,109 @@
+div.host {
+    width: 100%;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    max-width: 1280px;
+}
+
+:host {
+    justify-content: center;
+    display: flex;
+}
+
+div.outer-header {
+    gap: 8px;
+    max-width: inherit;
+    width: inherit;
+    height: 32px;
+    max-height: 32px;
+    min-height: 32px;
+    display:flex;
+    margin-bottom: 1rem;
+}
+
+div.search-field-total {
+    display:flex;
+    width: 100%;
+}
+
+div.search-field {
+    width: inherit;
+    padding-left: 12px;   
+    border: 0.0625rem solid;
+    border-color: var(--border-color);
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+}
+
+input.search-field-input {
+    width: inherit;
+    height: 32px;
+    max-height: 32px;
+}
+
+.search-button {
+    
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-left: none;
+
+}
+
+.label-button {
+    padding: 0 .75rem;
+}
+.label-button-image {
+    margin-right: .5rem;
+}
+
+.new-issue-button {
+    background-color: #238636;
+    padding: 0 .75rem;
+}
+.new-issue-button:hover {
+    background-color: #29903b;
+}
+
+
+
+
+div.main-panel {
+    border: 0.0625rem solid;
+    border-color: var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+
+
+div.header {
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+    display: flex;
+    justify-content: flex-start;
+    width: inherit;
+    max-height: 48px;
+    border-bottom: 0.0625rem solid;
+    border-bottom-color: var(--border-color);
+    background-color: var(--bg-muted-color);
+    padding: 8px;
+}
+
+
+div.list {
+    padding: 32px;
+}
+
+
+h3.no-results {
+    margin-top: 0px;
+    width: inherit;
+    margin-bottom: 4px;
+}
+p.no-results {
+    color: var(--fg-muted-color);
+    width: inherit;
+    margin-bottom: 10px;
+}
+

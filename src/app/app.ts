@@ -3,10 +3,16 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.scss'
+  template: `<router-outlet></router-outlet>`,
+  styles: [`
+        :host {
+            display: block;
+            min-height: 100vh;
+            min-width: 100vh;
+            background: #0d1117;
+        }    
+    `]
 })
-export class App {
-  protected readonly title = signal('GitGud-Skill-Issues');
-}
+export class App {}
