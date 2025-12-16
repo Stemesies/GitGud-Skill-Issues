@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 body {
+    box-sizing: border-box;
     font-family: "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
     color: #f0f6fc;
     line-height: 1.5;
@@ -23,13 +24,18 @@ h3 {
     
 }
 
-input {
+input, textarea {
     background-color: #0000;
-    border-color: #0000;
+    border-color: #3d444d;
     box-shadow: none;
-    border: none;
-    
+    border: 0.0625rem solid #3d444d;
+    border-radius: 0.375rem;
+    color: #fff;
     padding: 0px;
+    outline: none;
+}
+input:focus, textarea:focus {
+    border-color: #4493f8;
 }
 
 button.trans {
@@ -42,6 +48,7 @@ button.trans {
 }
 
 button {
+    cursor: pointer;
     color: #fff;
     padding: 0px;
     border: 0.0625rem solid;
@@ -56,6 +63,7 @@ button {
     font-weight: 500;
     background-color: #212830;
     min-height: 32px;
+    padding: 0 .75rem;
     min-width: 32px;
 }
 button:hover {
@@ -79,4 +87,23 @@ span {
     font-family: inherit;
     justify-content: center;
     align-items: center;
+}
+
+a {
+    color: #4493f8;
+    text-decoration: underline;
+    cursor: pointer;
+}
+a:hover {
+    text-decoration: none;
+}
+
+svg.svg-open {
+    color: #3fb950;
+}
+svg.svg-closed {
+    color: #ab7df8;
+}
+svg.svg-not-planned {
+    color: #9198a1;
 }

@@ -14,9 +14,11 @@ export class IssueTrackerService {
 
     load(): Issue[] {
         var smaxid = localStorage.getItem(this.MAX_ID_KEY)
-        if(smaxid != undefined)
+        if(smaxid != null)
             this.maxId = Number.parseInt(smaxid)
-        console.log("Max id: " + smaxid)
+        else
+            this.maxId = 1;
+        console.log("Max id: " + this.maxId)
 
         var json = localStorage.getItem(this.KEY)
         console.log("loading" + json)

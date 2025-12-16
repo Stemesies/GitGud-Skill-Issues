@@ -3,23 +3,21 @@ import { Issue } from "../model/Issue";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { IssueTrackerService } from "../services/IssueTrackerService";
+import { ActivatedRoute, Router } from "@angular/router";
+import { IssueItem } from "./IssueItem";
 
 @Component({
     selector: 'issues-list',
     standalone: true,
-    imports: [ CommonModule, FormsModule ],
+    imports: [ CommonModule, FormsModule, IssueItem ],
     templateUrl: '../layout/issuesList/l.html',
     styleUrls: ['../layout/issuesList/l.scss']
 })
 
 export class IssuesList implements OnInit {
+    router = inject(Router);
     selectedIssues: Issue[] = [];
     filteredIssues: Issue[] = [];
-
-    filterTypes = ['movie', 'series', 'episode'];
-    filter: 'movie' | 'series' | 'episode' = 'movie';
-
-    usingCache = "";
  
     searchString = '';
     searchDraft = '';
@@ -44,6 +42,7 @@ export class IssuesList implements OnInit {
         }
 
         this.filteredIssues = list;
+        console.log(this.filteredIssues)
  
     }
 

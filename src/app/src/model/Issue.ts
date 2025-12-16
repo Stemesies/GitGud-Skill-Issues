@@ -4,11 +4,12 @@ import { Label } from "./Label";
 export interface Issue {
     id: number
     status: IssueStatus
-    title: String
+    title: string
+    description: string
     owner: string
 
-    created: Date
-    updated: Date
+    created: number
+    updated: number
 
     assignees: string[]
     labels: Label[]

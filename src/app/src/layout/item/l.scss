@@ -1,0 +1,30 @@
+:host {
+    display: flex;
+    height: 64px;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+}
+
+.selection {
+    margin-left: 1rem;
+    margin-right: 0.5rem;
+}
+
+.status {
+    padding-top: 16px;
+    padding-right: 4px;
+    min-width: 22px;
+    justify-content: flex-start;
+    flex-direction: row;
+    display: flex;
+    align-items: flex-start;
+}
+
+.title {
+    justify-content: start;
+    align-items: start;
+    text-align: start;
+    font-size: 1rem;
+    font-weight: 600;
+}

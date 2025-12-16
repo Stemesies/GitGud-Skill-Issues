@@ -28,19 +28,15 @@ div.search-field-total {
     width: 100%;
 }
 
-div.search-field {
-    width: inherit;
-    padding-left: 12px;   
-    border: 0.0625rem solid;
-    border-color: var(--border-color);
-    border-top-left-radius: var(--border-radius);
-    border-bottom-left-radius: var(--border-radius);
-}
+
 
 input.search-field-input {
     width: inherit;
     height: 32px;
+    padding-left: 12px;   
     max-height: 32px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 
 .search-button {
@@ -67,7 +63,10 @@ input.search-field-input {
 }
 
 
-
+issue-item {
+    border-color: #3d444db3 !important;
+    border-bottom: 0.0625rem solid;
+}
 
 div.main-panel {
     border: 0.0625rem solid;
