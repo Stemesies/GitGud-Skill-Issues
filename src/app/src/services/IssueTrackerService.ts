@@ -34,11 +34,11 @@ export class IssueTrackerService {
         localStorage.setItem(this.KEY, json)
     }
 
-    addItem(omitItem: Omit<Issue, 'id'>) {
+    addItem(omitItem: Omit<Issue, 'id'>): number {
         var item = {  ...omitItem, id: this.maxId++ };
         this.list.push(item); 
         this.save();
-        return this.list;
+        return this.maxId - 1;
     }
 
     updateItem(id: number, updates: Partial<Issue>) {

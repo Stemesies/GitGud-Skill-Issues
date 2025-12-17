@@ -5,11 +5,12 @@ import { FormsModule } from "@angular/forms";
 import { IssueTrackerService } from "../services/IssueTrackerService";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IssueItem } from "./IssueItem";
+import { GitGudHeader } from "./GitGudHeader";
 
 @Component({
     selector: 'issues-list',
     standalone: true,
-    imports: [ CommonModule, FormsModule, IssueItem ],
+    imports: [CommonModule, FormsModule, IssueItem, GitGudHeader],
     templateUrl: '../layout/issuesList/l.html',
     styleUrls: ['../layout/issuesList/l.scss']
 })

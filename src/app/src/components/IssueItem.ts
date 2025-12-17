@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Input, Optional, Output  } from "@angular/core";
+import { Component, EventEmitter, inject, Input, Optional, Output  } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Issue } from "../model/Issue";
 import { IssueStatus } from "../model/IssueStatus";
+import { Router } from "@angular/router";
+import { GitGudHeader } from "./GitGudHeader";
 
 @Component({
     selector: 'issue-item',
@@ -13,6 +15,8 @@ import { IssueStatus } from "../model/IssueStatus";
 })
 
 export class IssueItem {
+    router = inject(Router);
+    
     @Input() item!: Issue;
     @Output() select = new EventEmitter<number>();
 
@@ -27,5 +31,9 @@ export class IssueItem {
 
     isNotPlanned(): boolean {
         return this.item.status == IssueStatus.Stale
+    }
+
+    gotoIssue() {
+        this.router.navigate(['/', this.item.id.toString()])
     }
 }

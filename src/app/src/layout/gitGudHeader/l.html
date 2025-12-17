@@ -1,0 +1,15 @@
+<div class="host">
+    <input class="username" [(ngModel)]="username" *ngIf="state != 'none'" placeholder="Username">
+    <input class="pfp" [(ngModel)]="pfp" *ngIf="state == 'register'" placeholder="Profile picture link">
+    <img class="pfp" src="{{account.pfp}}" *ngIf="account != undefined">
+    <button class="register" *ngIf="account == undefined" (click)="register()">
+        <span>Register</span>
+    </button>
+    <button class="login" *ngIf="account == undefined" (click)="logIn()">
+        <span>Log in</span>
+    </button>
+    <button class="logout" *ngIf="account != undefined" (click)="logOut()">
+        <span>Log out</span>
+    </button>
+    <span *ngIf="error" style="color: #f85149;">{{error}}</span>
+</div>

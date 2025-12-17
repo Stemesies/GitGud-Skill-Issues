@@ -1,0 +1,15 @@
+:host {
+    display: inline;
+    width: 100%;
+}
+.host {
+    width: 100%;
+    background-color: black;
+    padding-bottom: 32px;
+    border-bottom: 0.0625rem solid;
+    border-bottom-color: var(--border-color);
+}
+
+input {
+    height: 32px;
+}

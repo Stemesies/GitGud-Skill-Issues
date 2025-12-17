@@ -22,9 +22,15 @@
 }
 
 .title {
+    color: #fff;
     justify-content: start;
     align-items: start;
     text-align: start;
     font-size: 1rem;
     font-weight: 600;
+}
+.title:hover {
+    cursor: pointer;
+    color: #4493f8;
+    text-decoration: underline;
 }

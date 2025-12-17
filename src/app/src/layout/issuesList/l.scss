@@ -9,7 +9,7 @@ div.host {
 
 :host {
     justify-content: center;
-    display: flex;
+    display: block;
 }
 
 div.outer-header {
@@ -27,8 +27,6 @@ div.search-field-total {
     display:flex;
     width: 100%;
 }
-
-
 
 input.search-field-input {
     width: inherit;

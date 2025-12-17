@@ -1,0 +1,23 @@
+
+div.status {
+    font-weight: 600;
+    border-bottom: 0.0625rem solid;
+    border-bottom-color: var(--border-color);
+}
+
+div.status-div {
+     padding: .5rem .75rem;
+    display: inline-flex;
+    color: #fff;
+    border-radius: 624.9375rem;
+}
+
+div.svg-open {
+    background-color: #3fb950;
+}
+div.svg-closed {
+    background-color: #ab7df8;
+}
+div.svg-not-planned {
+    background-color: #9198a1;
+}

@@ -5,11 +5,12 @@ import { FormsModule } from "@angular/forms";
 import { IssueTrackerService } from "../services/IssueTrackerService";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IssueStatus } from "../model/IssueStatus";
+import { issueRightBlockSettings } from "./IssueRightBlockSettings";
 
 @Component({
     selector: 'issues-list',
     standalone: true,
-    imports: [ CommonModule, FormsModule ],
+    imports: [ CommonModule, FormsModule, issueRightBlockSettings ],
     templateUrl: '../layout/newIssue/l.html',
     styleUrls: ['../layout/newIssue/l.scss']
 })
@@ -41,8 +42,11 @@ export class IssueCreator implements OnInit {
         
     }
 
-    assignYourself() {
+    
 
+
+    dismiss() {
+        this.router.navigate(['/'])
     }
 
     create() {
@@ -50,7 +54,7 @@ export class IssueCreator implements OnInit {
             this.triedToSaveWithoutName = true
             return;
         }
-        this.issueTrackerService.addItem(this.issue)
-        this.router.navigate(['/'])
+        var id = this.issueTrackerService.addItem(this.issue)
+        this.router.navigate(['/', id.toString()])
     }
 }

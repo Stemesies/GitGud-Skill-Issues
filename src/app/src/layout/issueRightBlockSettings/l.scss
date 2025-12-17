@@ -1,0 +1,44 @@
+:host {
+    width: 100%;    
+    max-width: 296px;
+}
+
+div.right-block {
+    width: 100%;    
+    max-width: 296px;
+}
+
+div.separator {
+    background-color: #3d444db3;
+    height: 1px;
+    margin: 0.25rem 0;
+}
+
+
+.desc-title {
+    text-align: start;
+    align-items: start;
+    justify-content: start;
+    margin-top: 4px;
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    display: flex;
+}
+
+
+
+button.trans {
+    display: flex;
+    width: 100%;
+    padding: 0 .5rem;
+    align-content: start;
+}
+
+
+span.l-title {
+    flex-grow: 1;
+    text-align: start;
+    align-items: start;
+    justify-content: start;
+}
