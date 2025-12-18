@@ -21,7 +21,6 @@ export class IssueTrackerService {
         console.log("Max id: " + this.maxId)
 
         var json = localStorage.getItem(this.KEY)
-        console.log("loading" + json)
         this.list = json ? JSON.parse(json) : []
         return this.list
     }
@@ -30,7 +29,6 @@ export class IssueTrackerService {
         localStorage.setItem(this.MAX_ID_KEY, this.maxId.toString())
         
         var json = JSON.stringify(this.list)
-        console.log("saving" + json)
         localStorage.setItem(this.KEY, json)
     }
 

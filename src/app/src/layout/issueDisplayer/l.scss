@@ -1,7 +1,9 @@
 
 
 div.title-block {
+    max-width: 1280px;
     display: flex;
+    margin: auto;
     padding: 0 1.5rem;
     padding-top: 1.5rem;
     justify-content: center;
@@ -22,6 +24,8 @@ span.id {
 
 
 div.status {
+    max-width: 1280px;
+    margin: auto;
     align-items: start;
     display: flex;
     padding: 0.75rem 1.5rem;
@@ -143,12 +147,22 @@ div.input-field {
     padding: 0;
 }
 
+.rename-field {
+    flex-grow: 1;
+    height: 32px;
+}
 .post-button {
-    margin-left: 8px;
+    background-color: #238636;
+    padding: 0 .75rem;
+}
+.save-button {
     background-color: #238636;
     padding: 0 .75rem;
 }
 .post-button:hover {
+    background-color: #29903b;
+}
+.save-button:hover {
     background-color: #29903b;
 }
 

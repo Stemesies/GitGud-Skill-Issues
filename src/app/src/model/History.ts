@@ -1,6 +1,8 @@
 import { Account } from "./Account";
+import { AssignmentHistory } from "./histData/AssignmentHistory";
 import { ClosureHistory } from "./histData/ClosureHistory";
 import { CommentHistory } from "./histData/CommentHistory";
+import { RenameHistory } from "./histData/RenameHistory";
 import { HistoryTypes } from "./HistoryTypes";
 
 export interface History {
@@ -8,5 +10,5 @@ export interface History {
     created: number
     owner: Account
 
-    data: CommentHistory | ClosureHistory
+    data: CommentHistory | ClosureHistory | AssignmentHistory | RenameHistory
 }

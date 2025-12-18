@@ -37,8 +37,38 @@ button.trans {
 
 
 span.l-title {
+    color: #9198a1;
     flex-grow: 1;
     text-align: start;
     align-items: start;
+    justify-content: start;
+}
+
+div.assignee-dropdown {
+    background-color: #010409;
+    max-height: 100vh;
+    min-width: 192px;
+    position: absolute;
+    left: -64px;
+    width: 320px;
+    padding: .5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0px 0px 0px 1px #3d444d, 0px 6px 12px -3px #01040966, 0px 6px 18px 0px #01040966;
+}
+
+input.search {
+    height: 32px;
+    margin: .5rem 0;
+    width: calc(100% - .5rem);
+    padding-left: .5rem;
+}
+
+span.assignee-dropdown-title {
+    width: 100%;
+    text-align: start;
+    margin-left: .5rem;
+    
+    font-size: 0.875rem;
+    font-weight: 600;
     justify-content: start;
 }

@@ -13,7 +13,7 @@ export interface Issue {
     created: number
     updated: number
 
-    assignees: string[]
+    assignees: Account[]
     labels: Label[]
 
     history: History[]

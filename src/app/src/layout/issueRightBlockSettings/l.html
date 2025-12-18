@@ -1,6 +1,6 @@
 <div class="right-block">
         <div>
-            <button class="trans">
+            <button class="trans" (click)="assignee()">
                 <span class="l-title">Assignees</span>
                 <span>
                     <svg>
@@ -8,8 +8,38 @@
                     </svg>
                 </span>
             </button>
-            <div class="desc-title">
-                <span>No one - </span><a (click)="assignYourself()">Assign yourself</a>
+
+
+            <div style="position: relative;" *ngIf="showAssigneeDropdown">
+                <div class="assignee-dropdown">
+                    <span class="assignee-dropdown-title">Select assignees</span>
+                    <input class="search" [(ngModel)]="assigneeSearchString" placeholder="Filter assignees" (input)="search()">
+                    <div class="separator"></div>
+                    @for (prof of filteredAssignees; track $index) {
+                        <button class="trans" style="justify-content: start;" (click)="assigneeAddOrRemove(prof)">
+                            @if (isSelected(prof)) {
+                                <div class="checkbox-selected">
+                                    <svg style="color: #fff;"><path d="M9,16.17L4.83,12l-1.42,1.41L9,19 21,7l-1.41,-1.41z"/></svg>
+                                </div>
+                            } @else {
+                                <div class="checkbox"></div>
+                            }
+                            <img class="pfp32" style="margin-left: 1rem; width: 20px; height: 20px;" src="{{prof.pfp}}">
+                            <span class="assignee-name">{{prof.username}}</span>
+                        </button>
+                    }
+                </div>
+            </div>
+
+
+            @for (assignee of issue.assignees; track $index) {
+                <button class="trans" style="justify-content: start;">
+                    <img class="pfp32" style="width: 20px; height: 20px;" src="{{assignee.pfp}}">
+                    <span class="assignee-name">{{assignee.username}}</span>
+                </button>
+            }
+            <div class="desc-title" *ngIf="this.issue.assignees.length == 0">
+                <span style="color: #9198a1;">No one - </span><a (click)="assignYourself()">Assign yourself</a>
             </div>
         </div>
         <div class="separator"></div>

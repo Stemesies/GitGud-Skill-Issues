@@ -7,6 +7,8 @@ import RelativeTimeElement from "@github/relative-time-element";
 import { CommentHistory } from "../model/histData/CommentHistory";
 import { ClosureHistory } from "../model/histData/ClosureHistory";
 import { IssueStatus } from "../model/IssueStatus";
+import { AssignmentHistory } from "../model/histData/AssignmentHistory";
+import { RenameHistory } from "../model/histData/RenameHistory";
 
 @Component({
     selector: 'history-item',
@@ -48,5 +50,19 @@ export class HistoryItem {
     }
     isClosureHistoryReopened() {
         return this.isClosure() && this.dataAsClosureHistory().newStatus == IssueStatus.Open
+    }
+
+    isAssignee() {
+        return this.item.type == HistoryTypes.Assign
+    }
+    dataAsAssigneeHistory() {
+        return this.item.data as AssignmentHistory
+    }
+
+    isRename() {
+        return this.item.type == HistoryTypes.Rename
+    }
+    dataAsRenameHistory() {
+        return this.item.data as RenameHistory
     }
 }

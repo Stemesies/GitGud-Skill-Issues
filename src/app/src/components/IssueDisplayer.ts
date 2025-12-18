@@ -11,6 +11,8 @@ import { Account } from "../model/Account";
 import { History } from "../model/History";
 import { HistoryTypes } from "../model/HistoryTypes";
 import { HistoryItem } from "./HistoryItem";
+import { Observable, Subject } from "rxjs";
+import { AccountLogger } from "../services/AccountLogger";
 
 @Component({
     selector: 'issues-displayer',
@@ -26,7 +28,12 @@ export class IssueDisplayer implements AfterViewInit {
     issueId: number = 0;
     issue: Issue | undefined = undefined;
     account: Account | undefined = undefined
+    private accountSubject: Subject<AccountLogger> = new Subject()
+    accountLogger$: Observable<AccountLogger> = this.accountSubject.asObservable()
     comment: string = ""
+
+    renaming = false
+    newName = ""
 
     closureDropdownShow = false
     closureType: 'close' | 'reopen' | 'wontfix' = 'close'
@@ -41,11 +48,13 @@ export class IssueDisplayer implements AfterViewInit {
             this.issueId = params['id'];
             this.issue = this.issueTrackerService.list.find(it=>it.id == this.issueId);
             if(this.issue == undefined) {
+                console.log("no")
                 this.router.navigate(['/'])
                 return;
             }
 
             this.closureType = this.issue.status == IssueStatus.Open? 'close' : 'reopen'
+            this.newName = this.issue.title
 
         });
     }
@@ -59,16 +68,41 @@ export class IssueDisplayer implements AfterViewInit {
             })
 
         this.account = this.ggHeader.accountLogger.current;
+        this.accountSubject.next(this.ggHeader.accountLogger)
         this.changeDetectorRef.detectChanges()
             
     }
 
-    loadAccount() {
-        
+    cancelEditing() {
+        this.triedToSaveWithoutName = false
+        this.renaming = false
+        this.newName = this.issue!.title
     }
 
-    assignYourself() {
+    rename() {
+        if(!this.newName.trim()) {
+            this.triedToSaveWithoutName = true
+            return
+        }
+        if(this.newName == this.issue?.title) {
+            this.renaming = false
+            return
+        }
 
+        console.log("Renaming to " + this.issue)
+        var history: History = {
+            type: HistoryTypes.Rename,
+            created: Date.now(),
+            owner: this.account!,
+            data: {
+                oldName: this.issue!.title,
+                newName: this.newName
+            }
+        }
+        this.issue!.history.push(history)
+        this.issue!.title = this.newName;
+        this.issueTrackerService.save()
+        this.renaming = false
     }
 
     
@@ -82,10 +116,6 @@ export class IssueDisplayer implements AfterViewInit {
 
     isNotPlanned(): boolean {
         return this.issue?.status == IssueStatus.Stale
-    }
-
-    edit() {
-
     }
 
     postComment() {

@@ -122,6 +122,55 @@ div.space {
 
 
 
+.pfp16 {
+    width: 16px;
+    height: 16px;
+    border: 0.125rem solid #0d1117;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    display: flex;
+    background-color: #212830;
+    color: #9198a1;
+    justify-self: center;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    box-shadow: 0 0 0 1px #ffffff26;
+}
+
+.pfp32 {
+    width: 32px;
+    height: 32px;
+    border: 0.125rem solid #0d1117;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    display: flex;
+    background-color: #212830;
+    color: #9198a1;
+    box-sizing: border-box;
+    justify-self: center;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    box-shadow: 0 0 0 1px #ffffff26;
+}
+
+.pfp40 {
+    width: 40px;
+    height: 40px;
+    border: 0.125rem solid #0d1117;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    display: flex;
+    background-color: #212830;
+    color: #9198a1;
+    box-sizing: border-box;
+    justify-self: center;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    box-shadow: 0 0 0 1px #ffffff26;
+}
 
 
 div.comment-body {
@@ -140,4 +189,22 @@ div.comment-header {
 p.comment-content-body {
     text-align: start;
     padding: 1rem;
+}
+
+div.checkbox {
+    width: 16px;
+    height: 16px;
+    border-radius: 0.1875rem;
+    border: .0625rem solid #656c76;
+    background-color: #0d1117;
+}
+
+div.checkbox-selected {
+    width: 16px;
+    height: 16px;
+    border-radius: 0.1875rem;
+    border: .0625rem solid #656c76;
+    background-color: #1f6feb;
+    
+    border-color: #1f6feb;
 }
