@@ -18,7 +18,6 @@ export class AccountLogger {
 
     load(): Account[] {
         var json = localStorage.getItem(this.KEY)
-        console.log("loading" + json)
         this.list = json ? JSON.parse(json) : []
         
         var cr = localStorage.getItem(this.KEY_CURRENT);
@@ -30,7 +29,6 @@ export class AccountLogger {
 
     save() {
         var json = JSON.stringify(this.list)
-        console.log("saving accounts" + json)
         localStorage.setItem(this.KEY, json)
 
         if(this.current == undefined)

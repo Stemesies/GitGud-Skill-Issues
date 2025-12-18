@@ -65,6 +65,7 @@ button {
     min-height: 32px;
     padding: 0 .75rem;
     min-width: 32px;
+    gap: 8px;
     max-height: 32px;
 }
 button:hover {
@@ -127,7 +128,6 @@ div.space {
     height: 16px;
     border: 0.125rem solid #0d1117;
     border-radius: 50%;
-    margin-right: 0.5rem;
     display: flex;
     background-color: #212830;
     color: #9198a1;
@@ -143,7 +143,6 @@ div.space {
     height: 32px;
     border: 0.125rem solid #0d1117;
     border-radius: 50%;
-    margin-right: 0.5rem;
     display: flex;
     background-color: #212830;
     color: #9198a1;
@@ -160,7 +159,6 @@ div.space {
     height: 40px;
     border: 0.125rem solid #0d1117;
     border-radius: 50%;
-    margin-right: 0.5rem;
     display: flex;
     background-color: #212830;
     color: #9198a1;
@@ -207,4 +205,12 @@ div.checkbox-selected {
     background-color: #1f6feb;
     
     border-color: #1f6feb;
+}
+
+div.dialog {
+    background-color: #010409;
+    position: absolute;
+    padding: .5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0px 0px 0px 1px #3d444d, 0px 6px 12px -3px #01040966, 0px 6px 18px 0px #01040966;
 }

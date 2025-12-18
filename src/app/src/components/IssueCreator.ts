@@ -8,6 +8,8 @@ import { IssueStatus } from "../model/IssueStatus";
 import { issueRightBlockSettings } from "./IssueRightBlockSettings";
 import { GitGudHeader } from "./GitGudHeader";
 import { Account } from "../model/Account";
+import { Subject, Observable } from "rxjs";
+import { AccountLogger } from "../services/AccountLogger";
 
 @Component({
     selector: 'issues-list',
@@ -22,6 +24,8 @@ export class IssueCreator implements OnInit, AfterViewInit {
 
     account: Account | undefined = undefined
     @ViewChild(GitGudHeader) ggHeader!: GitGudHeader;
+    private accountSubject: Subject<AccountLogger> = new Subject()
+    accountLogger$: Observable<AccountLogger> = this.accountSubject.asObservable()
     
     issue: Omit<Issue, 'id'> = {
         status: IssueStatus.Open,
@@ -39,11 +43,12 @@ export class IssueCreator implements OnInit, AfterViewInit {
         this.ggHeader.accountLogger.current$
             .subscribe( (it)=> {
                 
-                console.log("IssueCreator: account updated: " + it)
+                console.log("IssueCreator: account updated: ", it)
                 this.account = it
             })
 
         this.account = this.ggHeader.accountLogger.current;
+        this.accountSubject.next(this.ggHeader.accountLogger)
     }
 
     triedToSaveWithoutName: boolean = false

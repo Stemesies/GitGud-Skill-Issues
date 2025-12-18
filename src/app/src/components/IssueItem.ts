@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Optional, Output  } from "@angular/core";
+import { Component, EventEmitter, inject, Input, OnInit, Optional, Output  } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Issue } from "../model/Issue";
@@ -6,6 +6,8 @@ import { IssueStatus } from "../model/IssueStatus";
 import { Router } from "@angular/router";
 import { GitGudHeader } from "./GitGudHeader";
 import { IssueTrackerService } from "../services/IssueTrackerService";
+import { HistoryTypes } from "../model/HistoryTypes";
+import { History } from "../model/History";
 
 @Component({
     selector: 'issue-item',
@@ -15,12 +17,20 @@ import { IssueTrackerService } from "../services/IssueTrackerService";
     styleUrls: ['../layout/item/l.scss']
 })
 
-export class IssueItem {
+export class IssueItem implements OnInit {
     router = inject(Router);
     
+    isSelected = false
+
     @Input() item!: Issue;
     @Output() select = new EventEmitter<number>();
 
+    comments: History[] = []
+
+    ngOnInit() {
+        var a = this.item.history.filter(it=>it.type == HistoryTypes.Comment)
+        this.comments = a? a : []
+    }
 
     isOpen(): boolean {
         return this.item.status == IssueStatus.Open

@@ -1,9 +1,16 @@
 :host {
     display: flex;
     height: 64px;
+    box-sizing: border-box;
+    padding: 0 1rem;
     justify-content: start;
     align-items: center;
     width: 100%;
+    gap: 8px;
+}
+
+:host:hover {
+    background-color: #151b23;
 }
 
 .selection {
@@ -12,22 +19,24 @@
 }
 
 .status {
-    padding-top: 16px;
+    justify-content: center;
+    align-items: center;
     padding-right: 4px;
     min-width: 22px;
-    justify-content: flex-start;
     flex-direction: row;
     display: flex;
-    align-items: flex-start;
 }
 
 .title {
+    display: flex;
     color: #fff;
     justify-content: start;
     align-items: start;
     text-align: start;
     font-size: 1rem;
     font-weight: 600;
+    width: 100%;
+    justify-content: start;
 }
 .title:hover {
     cursor: pointer;

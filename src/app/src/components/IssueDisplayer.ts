@@ -63,7 +63,7 @@ export class IssueDisplayer implements AfterViewInit {
         this.ggHeader.accountLogger.current$
             .subscribe( (it)=> {
                 
-                console.log("IssueDisplayer: account updated: " + it)
+                console.log("IssueDisplayer: account updated: ", it)
                 this.account = it
             })
 

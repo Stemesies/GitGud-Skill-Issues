@@ -32,6 +32,8 @@ export class issueRightBlockSettings implements OnInit {
     assigneeSearchString: string = ""
     filteredAssignees: Account[] = []
     assigneeSelected: Account[] = []
+
+    showDeletionConfirmation = false
     
     constructor(private issueTrackerService: IssueTrackerService) { }
 
@@ -74,7 +76,11 @@ export class issueRightBlockSettings implements OnInit {
         this.assigneeSelected.push(this.accountLogger!.current!)
         this.issue!.assignees.push(this.accountLogger!.current!)
         this.issue!.history.push(history)
-        this.issueTrackerService.save()
+        if(this.issueExists()) {
+            this.issueTrackerService.save()
+        } else {
+            console.log("Issue does not exist. Not saving.")
+        }
         
     }
 
@@ -98,11 +104,19 @@ export class issueRightBlockSettings implements OnInit {
 
     assignee() {
         if(!this.showAssigneeDropdown) {
-            if(this.accountLogger?.current != undefined)
+            if(this.accountLogger?.current != undefined) {
                 this.showAssigneeDropdown = true
+            } else {
+                console.log("Not logged in")
+            }
             return
         }
         this.showAssigneeDropdown = false
+
+        if(!this.issueExists()) {
+            this.issue.history = this.issue.history.filter(it=>it.type != HistoryTypes.Assign)
+            this.issue.assignees = []
+        }
 
         var added: Account[] = []
         var removed: Account[] = []
@@ -133,6 +147,29 @@ export class issueRightBlockSettings implements OnInit {
 
         this.issue.assignees = []
         this.assigneeSelected.forEach(it=> this.issue.assignees.push(it))
-        this.issueTrackerService.save()
+        if(this.issueExists()) {
+            this.issueTrackerService.save()
+        } else {
+            console.log("Issue does not exist. Not saving.")
+        }
+    }
+
+    getParticipants() {
+        var notHashseted = this.issue.history.map(it=>it.owner)
+        var hashset: Account[] = []
+        notHashseted.forEach(it=> {
+            if(!hashset.find(it2=> it2.username == it.username)) {
+                hashset.push(it)
+            }
+        })
+        return hashset
+    }
+
+    deleteIssue() {
+        if(!this.issueExists())
+            return
+
+        this.issueTrackerService.deleteItem((<Issue>this.issue).id)
+        this.router.navigate(['/'])
     }
 }
