@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Issue } from "../model/Issue";
 import { Account } from "../model/Account";
+import { Observable, Subject } from "rxjs";
 
 
 @Injectable({
@@ -12,6 +13,8 @@ export class AccountLogger {
     
     list: Account[] = [];
     current: Account | undefined = undefined;
+    private currentSubscribtion: Subject<Account | undefined> = new Subject()
+    current$: Observable<Account | undefined> = this.currentSubscribtion.asObservable()
 
     load(): Account[] {
         var json = localStorage.getItem(this.KEY)
@@ -20,6 +23,7 @@ export class AccountLogger {
         
         var cr = localStorage.getItem(this.KEY_CURRENT);
         this.current = this.list.find(it=>it.username == cr)
+        this.currentSubscribtion.next(this.current)
 
         return this.list
     }
@@ -33,6 +37,7 @@ export class AccountLogger {
             localStorage.setItem(this.KEY_CURRENT, "" );
         else
             localStorage.setItem(this.KEY_CURRENT, this.current?.username );
+        this.currentSubscribtion.next(this.current)
         
     }
 
@@ -48,14 +53,17 @@ export class AccountLogger {
     }
 
     logIn(username: string): Account | undefined {
-        this.load()
-        this.current = this.list.find(it=>it.username == username);
-        this.save();
+        this.current = this.list.find(it=>it.username == username)
+        this.save()
         return this.current;
     }
 
+    logOut() {
+        this.current = undefined
+        this.save()
+    }
+
     register(username: string, pfp: string): Account | undefined {
-        this.load()
         if(this.list.find(it=>it.username == username) != undefined)
             return undefined;
         var account = {username, pfp};

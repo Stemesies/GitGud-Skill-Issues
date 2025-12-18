@@ -60,6 +60,17 @@ input.search-field-input {
     background-color: #29903b;
 }
 
+.reset-button {
+    margin-top: 32px;
+    background-color: #212830;
+    color: #fa5e55;
+    padding: 0 .75rem;
+}
+.reset-button:hover {
+    background-color: #b62324;
+    color: #fff;
+}
+
 
 issue-item {
     border-color: #3d444db3 !important;

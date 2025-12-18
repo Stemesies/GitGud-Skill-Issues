@@ -65,6 +65,7 @@ button {
     min-height: 32px;
     padding: 0 .75rem;
     min-width: 32px;
+    max-height: 32px;
 }
 button:hover {
     background-color: #656c7633;
@@ -113,4 +114,30 @@ img.pfp {
     width: 32px;
     border-radius: 50%;
     box-shadow: 0 0 0 1px #ffffff26;
+}
+
+div.space {
+    flex-grow: 1;
+}
+
+
+
+
+
+div.comment-body {
+    flex-grow: 1;
+    border: 1px solid #388bfd66;
+    border-radius: 6px;
+}
+
+div.comment-header {
+    display: flex;
+    background-color: #388bfd1a;
+    border-bottom: 0.0625rem solid #388bfd66;
+    padding: 0.25rem 0.25rem 0.25rem 1rem;
+}
+
+p.comment-content-body {
+    text-align: start;
+    padding: 1rem;
 }

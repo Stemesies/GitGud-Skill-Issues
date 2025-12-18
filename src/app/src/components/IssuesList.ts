@@ -52,4 +52,10 @@ export class IssuesList implements OnInit {
         this.load();
     }
 
+     reset() {
+        this.issueTrackerService.list = []
+        this.issueTrackerService.maxId = 1
+        this.issueTrackerService.save()
+    }
+
 }

@@ -1,0 +1,52 @@
+.pfp {
+    width: 40px;
+    height: 40px;
+    margin-right: 1rem;
+}
+
+.mini-pfp {
+    width: 16px;
+    height: 16px;
+}
+
+
+
+div.icon {
+    border: 0.125rem solid #0d1117;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    display: flex;
+    height: 32px;
+    width: 32px;
+    box-sizing: border-box;
+    justify-self: center;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+.closure-username {
+    font-weight: 600;
+}
+.closure-simpletext {
+    color: #9198a1;
+    font-weight: 400;
+}
+.closure-status {
+    text-decoration: underline;
+}
+svg {
+    color: #fff;
+}
+
+div.closed-mark {
+    background-color: #ab7df8;
+    color: #9198a1;
+}
+div.staled-mark {
+    background-color: #9198a1;
+    color: #fff;
+}
+div.reopened-mark {
+    background-color: #3fb950;
+    color: #9198a1;
+}

@@ -1,8 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, EventEmitter, Output } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { AccountLogger } from "../services/AccountLogger";
 import { Account } from "../model/Account";
+import { Observable, of } from "rxjs";
 
 @Component({
     selector: 'gigut-header',
@@ -19,10 +20,12 @@ export class GitGudHeader {
     username: string = ""
     pfp: string = ""
     error: string = ""
+    accountLogger: AccountLogger
 
     state: 'register' | 'login' | 'none' = 'none'
 
-    constructor(private accountLogger: AccountLogger) {
+    constructor(accountLogger: AccountLogger) {
+        this.accountLogger = accountLogger;
         accountLogger.load()
         this.account = accountLogger.current;
     }
@@ -61,8 +64,7 @@ export class GitGudHeader {
 
     logOut() {
         this.account = undefined
-        this.accountLogger.current = undefined
-        this.accountLogger.save()
+        this.accountLogger.logOut()
         this.state = 'none'
     }
 }

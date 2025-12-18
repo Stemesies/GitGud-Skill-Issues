@@ -5,6 +5,7 @@ import { Issue } from "../model/Issue";
 import { IssueStatus } from "../model/IssueStatus";
 import { Router } from "@angular/router";
 import { GitGudHeader } from "./GitGudHeader";
+import { IssueTrackerService } from "../services/IssueTrackerService";
 
 @Component({
     selector: 'issue-item',

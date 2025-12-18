@@ -1,0 +1,52 @@
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { History } from "../model/History";
+import { HistoryTypes } from "../model/HistoryTypes";
+import RelativeTimeElement from "@github/relative-time-element";
+import { CommentHistory } from "../model/histData/CommentHistory";
+import { ClosureHistory } from "../model/histData/ClosureHistory";
+import { IssueStatus } from "../model/IssueStatus";
+
+@Component({
+    selector: 'history-item',
+    standalone: true,
+    imports: [CommonModule, FormsModule],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    templateUrl: '../layout/hist-item/l.html',
+    styleUrls: ['../layout/hist-item/l.scss']
+})
+
+export class HistoryItem {
+    
+    @Input() item!: History;
+
+    getDatetime() {
+        return new Date(this.item.created).toISOString()
+    }
+
+    isComment() {
+        return this.item.type == HistoryTypes.Comment
+    }
+
+    dataAsCommentHistory() {
+        return this.item.data as CommentHistory
+    }
+    
+    isClosure() {
+        return this.item.type == HistoryTypes.Closure
+    }
+    dataAsClosureHistory() {
+        return this.item.data as ClosureHistory
+    }
+
+    isClosureHistoryClosed() {
+        return this.isClosure() && this.dataAsClosureHistory().newStatus == IssueStatus.Closed
+    }
+    isClosureHistoryStaled() {
+        return this.isClosure() && this.dataAsClosureHistory().newStatus == IssueStatus.Stale
+    }
+    isClosureHistoryReopened() {
+        return this.isClosure() && this.dataAsClosureHistory().newStatus == IssueStatus.Open
+    }
+}
