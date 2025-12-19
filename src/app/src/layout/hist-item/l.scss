@@ -45,3 +45,13 @@ div.reopened-mark {
     background-color: #3fb950;
     color: #9198a1;
 }
+
+.comment-relative-time {
+    cursor: pointer;
+    color: #9198a1;
+    font-weight: 400;
+}
+
+.comment-relative-time:hover {
+    text-decoration:underline;
+}

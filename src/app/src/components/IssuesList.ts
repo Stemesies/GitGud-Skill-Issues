@@ -25,6 +25,7 @@ export class IssuesList implements OnInit {
     router = inject(Router);
     selectedIssues: Issue[] = [];
     filteredIssues: Issue[] = [];
+    filteredIssuesNoStatusFilter: Issue[] = [];
  
     searchString = '';
     searchDraft = '';
@@ -63,11 +64,11 @@ export class IssuesList implements OnInit {
     }
 
     countOpenedIssues() {
-        return this.issueTrackerService.list.filter(it=>it.status == IssueStatus.Open).length
+        return this.filteredIssuesNoStatusFilter.filter(it=>it.status == IssueStatus.Open).length
     }
 
     countClosedIssues() {
-        return this.issueTrackerService.list.filter(it=>it.status != IssueStatus.Open).length
+        return this.filteredIssuesNoStatusFilter.filter(it=>it.status != IssueStatus.Open).length
     }
 
     isLabelSelected(prof: Label) {
@@ -155,11 +156,6 @@ export class IssuesList implements OnInit {
                     .includes(this.searchString.toLowerCase())
                 );
         }
-        if(this.filterStatus == 'open') {
-            list = list.filter(it=> it.status == IssueStatus.Open)
-        } else {
-            list = list.filter(it=> it.status != IssueStatus.Open)
-        }
 
         if(this.filterAuthor) {
             list = list.filter(it=> it.owner.username == this.filterAuthor!.username)
@@ -205,6 +201,14 @@ export class IssuesList implements OnInit {
         }
 
         list.sort((a, b) => this.compare(a, b) )
+
+        this.filteredIssuesNoStatusFilter = list
+
+        if(this.filterStatus == 'open') {
+            list = list.filter(it=> it.status == IssueStatus.Open)
+        } else {
+            list = list.filter(it=> it.status != IssueStatus.Open)
+        }
 
         
 

@@ -4,6 +4,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { HistoryItem } from "./HistoryItem";
 import { LabelService } from "../services/LabelService";
+import { RelativeTime } from "../model/RelativeTime";
 
 @Component({
     selector: 'issue-history-displayer',
@@ -16,5 +17,12 @@ import { LabelService } from "../services/LabelService";
 export class IssueHistoryDisplayer {
     @Input() issue: Issue | undefined = undefined;
     @Input() labelService!: LabelService;
+ 
     
+     getDatetime() {
+        return  RelativeTime.format(this.issue!.created)
+    }
+    getDatetimeFormatted() {
+        return new Date(this.issue!.created).toString()
+    }
 }

@@ -14,6 +14,7 @@ import { PriorityTypes } from "../model/PriorityTypes";
 import { LabelHistory } from "../model/histData/LabelHistory";
 import { LabelService } from "../services/LabelService";
 import { LabelElement } from "./LabelElement";
+import { RelativeTime } from "../model/RelativeTime";
 
 @Component({
     selector: 'history-item',
@@ -30,7 +31,10 @@ export class HistoryItem {
     @Input() labelService!: LabelService;
 
     getDatetime() {
-        return new Date(this.item.created).toISOString()
+        return  RelativeTime.format(this.item.created)
+    }
+    getDatetimeFormatted() {
+        return new Date(this.item.created).toString()
     }
 
     isComment() {

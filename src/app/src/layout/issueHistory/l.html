@@ -4,7 +4,7 @@
         <div class="comment-header" style="gap: 3px;">
             <span style="font-weight: 500;">{{issue!.owner.username}}</span>
             <span style="color: #9198a1; font-weight: 400;"> opened </span>
-            <!-- <relative-time datetime="{{getDatetime()}}">{{getDatetime()}}</relative-time> -->
+            <span class="closure-simpletext comment-relative-time" [title]="getDatetimeFormatted()" style="text-decoration:underline;">{{getDatetime()}}</span>
         </div>
         @if (issue?.description == "") {
             <p class="comment-content-body" style="font-style: italic; color: #9198a1;">

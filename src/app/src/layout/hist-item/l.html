@@ -4,7 +4,7 @@
         <div class="comment-body">
             <div class="comment-header">
                 <span>{{item.owner.username}}</span>
-                <relative-time datetime="{{getDatetime()}}">{{getDatetime()}}</relative-time>
+                <span class="closure-simpletext comment-relative-time" [title]="getDatetimeFormatted()" style="margin-left: 4px;">{{getDatetime()}}</span>
             </div>
             <p class="comment-content-body">
                 {{dataAsCommentHistory().content}}
@@ -44,7 +44,7 @@
             <span class="closure-username">{{item.owner.username}}</span>
             <span class="closure-simpletext"> reopened this</span>
         }
-        <relative-time datetime="{{getDatetime()}}">{{getDatetime()}}</relative-time>
+        <span class="closure-simpletext comment-relative-time" [title]="getDatetimeFormatted()" style="text-decoration:underline;">{{getDatetime()}}</span>
     </div>
 } @else if (isAssignee()) {
     <div style="display: flex; margin-left: 56px; padding: 0.5rem 0; align-items: center; gap: 3px;">
@@ -74,7 +74,7 @@
                 }
             }
         }
-        <relative-time datetime="{{getDatetime()}}">{{getDatetime()}}</relative-time>
+        <span class="closure-simpletext comment-relative-time" [title]="getDatetimeFormatted()" style="text-decoration:underline;">{{getDatetime()}}</span>
     </div>
 } @else if (isRename()) {
     <div style="display: flex; margin-left: 56px; padding: 0.5rem 0; align-items: center; gap: 3px;">
@@ -89,7 +89,7 @@
         <span class="closure-simpletext" style="text-decoration:line-through;">{{dataAsRenameHistory().oldName}}</span>
         
         <span class="closure-simpletext">{{dataAsRenameHistory().newName}}</span>
-        <relative-time [datetime]="getDatetime()">{{getDatetime()}}</relative-time>
+        <span class="closure-simpletext comment-relative-time" [title]="getDatetimeFormatted()" style="text-decoration:underline;">{{getDatetime()}}</span>
         
     </div>
 } @else if (isPriority()) {
@@ -103,7 +103,7 @@
         <span class="closure-username">{{item.owner.username}}</span>
         <span class="closure-simpletext"> changed the priority to </span>
         <span class="closure-status">{{getPriorityString()}}</span>
-        <relative-time datetime="{{getDatetime()}}">{{getDatetime()}}</relative-time>
+        <span class="closure-simpletext comment-relative-time" [title]="getDatetimeFormatted()" style="text-decoration:underline;">{{getDatetime()}}</span>
         
     </div>
 } @else if (isLabel()) {
@@ -131,7 +131,7 @@
                 <label [name]="add.name" [color]="add.color"></label>
             }
         }
-        <relative-time datetime="{{getDatetime()}}">{{getDatetime()}}</relative-time>
+        <span class="closure-simpletext comment-relative-time" [title]="getDatetimeFormatted()" style="text-decoration:underline;">{{getDatetime()}}</span>
         
     </div>
 }
