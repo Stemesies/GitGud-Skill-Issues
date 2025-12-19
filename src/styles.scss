@@ -66,14 +66,17 @@ button {
     padding: 0 .75rem;
     min-width: 32px;
     gap: 8px;
+    min-width: fit-content;
     max-height: 32px;
 }
 button:hover {
-    background-color: #656c7633;
+    background-color: #262c36;
 }
 
 svg {
     fill: currentColor;
+    align-content: center;
+    align-items: center;
     height: 16px;
     width: 16px;
     color: var(--icon-color);
@@ -121,6 +124,10 @@ div.space {
     flex-grow: 1;
 }
 
+div.separator {
+    background-color: #3d444db3;
+    height: 1px;
+}
 
 
 .pfp16 {
@@ -210,7 +217,38 @@ div.checkbox-selected {
 div.dialog {
     background-color: #010409;
     position: absolute;
-    padding: .5rem;
     border-radius: 0.75rem;
     box-shadow: 0px 0px 0px 1px #3d444d, 0px 6px 12px -3px #01040966, 0px 6px 18px 0px #01040966;
+}
+
+div.dialog-content {
+    gap: 1rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.label {
+    border-radius: 999px;
+    padding: 0px 8px;
+    white-space: nowrap;
+    font-size: 12px;
+    height: 20px;
+    line-height: 20px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    align-content: center;
+    width:fit-content;
+    border-style: solid;
+    border-width: 1px;
+    --lightness-threshold: 0.6;
+    --perceived-lightness: calc(((var(--r) * 0.2126) + (var(--g) * 0.7152) + (var(--b) * 0.0722)) / 255);
+    --lightness-switch: max(0, min(calc((var(--perceived-lightness) - var(--lightness-threshold)) * -1000), 1));
+    --lighten-by: calc(((var(--lightness-threshold) - var(--perceived-lightness)) * 100) * var(--lightness-switch));
+    background: rgba(var(--r), var(--g), var(--b), 0.18);
+    color: hsl(var(--h), calc(var(--s) * 1%), calc((var(--l) + var(--lighten-by)) * 1%));
+    border-color: hsla(var(--h), calc(var(--s) * 1%), calc((var(--l) + var(--lighten-by)) * 1%), 0.3);
 }

@@ -7,6 +7,7 @@ import { History } from "../model/History";
 import { IssueStatus } from "../model/IssueStatus";
 import { Account } from "../model/Account";
 import { PriorityTypes } from "../model/PriorityTypes";
+import { Label } from "../model/Label";
 
 
 @Injectable({
@@ -188,6 +189,44 @@ export class IssueLogger {
 
         issue.assignees = []
         newList.forEach(it=> issue.assignees.push(it))
+        this.issueTrackerService!.save()
+        
+    }
+
+
+    label(issue: Issue, newList: number[]) {
+        if(!this.requireServiceConnection())
+            return
+
+        var added: number[] = []
+        var removed: number[] = []
+
+        newList.forEach(neww => { 
+            if(!issue.labels.find(it=>it == neww)) added.push(neww)
+        })
+        issue.labels.forEach(neww => { 
+            if(!newList.find(it=>it == neww)) removed.push(neww)
+        })
+
+        console.log("Issue labels: ", issue.labels)
+        console.log("Added: ", added)
+        console.log("Removed: ", removed)
+
+        if(added.length != 0 || removed.length != 0) {
+            var history: History = {
+                type: HistoryTypes.Label,
+                created: Date.now(),
+                owner: this.accountLogger!.current!,
+                data: {
+                    added: added,
+                    removed: removed
+                }
+            }
+            issue.history.push(history)
+        }
+
+        issue.labels = []
+        newList.forEach(it=> issue.labels.push(it))
         this.issueTrackerService!.save()
         
     }

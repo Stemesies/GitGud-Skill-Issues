@@ -59,7 +59,7 @@
 
     <div class="left-block">
 
-        <issue-history-displayer [issue]="issue"></issue-history-displayer>
+        <issue-history-displayer [issue]="issue" [labelService]="labelService"></issue-history-displayer>
 
         @if (account != undefined) {
             <div class="comment-creator">

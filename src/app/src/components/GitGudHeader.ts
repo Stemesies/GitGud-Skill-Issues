@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, inject, Input, OnInit, Output } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { AccountLogger } from "../services/AccountLogger";
 import { Account } from "../model/Account";
 import { Observable, of } from "rxjs";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'gigut-header',
@@ -14,6 +15,7 @@ import { Observable, of } from "rxjs";
 })
 
 export class GitGudHeader implements OnInit {
+    router = inject(Router);
 
     @Input() issueCount$!: Observable<number>;
     issueCount: number = 0;

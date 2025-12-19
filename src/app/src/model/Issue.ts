@@ -16,7 +16,7 @@ export interface Issue {
     updated: number
 
     assignees: Account[]
-    labels: Label[]
+    labels: number[]
 
     history: History[]
 }

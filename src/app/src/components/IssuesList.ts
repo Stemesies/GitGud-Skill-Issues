@@ -11,6 +11,7 @@ import { Account } from "../model/Account";
 import { Label } from "../model/Label";
 import { PriorityTypes } from "../model/PriorityTypes";
 import { HistoryTypes } from "../model/HistoryTypes";
+import { LabelService } from "../services/LabelService";
 
 @Component({
     selector: 'issues-list',
@@ -39,21 +40,25 @@ export class IssuesList implements OnInit {
     filterPriority: string | undefined = undefined
     filterAssignees: Account | undefined = undefined
     filterAuthor: Account | undefined = undefined
-    filterOnlyNoLabels = true
+    filterOnlyNoLabels = false
     filterLabels: Label[] = []
 
     authorList: Account[] = []
     assigneeList: Account[] = []
+    labelList: Label[] = []
 
     @ViewChild(GitGudHeader) ggHeader!: GitGudHeader;
 
     issueTrackerService: IssueTrackerService
-    constructor(issueTrackerService: IssueTrackerService) {
+    labelService: LabelService
+    constructor(issueTrackerService: IssueTrackerService, labelService: LabelService) {
         this.issueTrackerService = issueTrackerService
+        this.labelService = labelService
     }
 
     ngOnInit(): void {
         this.issueTrackerService.load()
+        this.labelService.load()
         this.load()
     }
 
@@ -65,9 +70,25 @@ export class IssuesList implements OnInit {
         return this.issueTrackerService.list.filter(it=>it.status != IssueStatus.Open).length
     }
 
+    isLabelSelected(prof: Label) {
+        return this.filterLabels.find(it=> it.id == prof.id)
+    }
+
+    labelAddOrRemove(account: Label): void {
+        if(this.filterLabels.includes(account))
+            this.filterLabels = this.filterLabels
+                .filter(it => it != account)
+        else
+            this.filterLabels.push(account)
+
+        console.log("SELECTED LABELS: ", this.filterLabels)
+        this.load()
+    }
+
     searchFilter() {
         this.assigneeList = this.ggHeader.accountLogger.list
         this.authorList = this.ggHeader.accountLogger.list
+        this.labelList = this.labelService.list
 
         if(this.filterSearchField.trim()) {
             if(this.showFilters == 'assignees') {
@@ -76,6 +97,9 @@ export class IssuesList implements OnInit {
             } else if(this.showFilters == 'author') {
                 this.authorList = this.ggHeader.accountLogger.list
                     .filter(it=> it.username.includes(this.filterSearchField))
+            } else if(this.showFilters == 'labels') {
+                this.labelList = this.labelService.list
+                    .filter(it=> it.name.includes(this.filterSearchField))
             }
         }
     }
@@ -145,14 +169,17 @@ export class IssuesList implements OnInit {
         }
         if(this.filterOnlyNoLabels) {
             list = list.filter(it=> it.labels.length == 0)
-        } else if(this.filterLabels) {
-            // list = list.filter(it=> {
-            //     this.filterLabels.
-            //     it.labels.find(it2=>it2.name == this.filterLabels?.name) != undefined
-            // } )
+        } else if(this.filterLabels.length > 0) {
+            list = list.filter(it=> {
+                console.log("Filtering ", it.title, "..... ", this.filterLabels.filter(it2=>
+                    it.labels.find(it3=>it3 == it2.id) != undefined
+                ).length == this.filterLabels.length)
+                return this.filterLabels.filter(it2=>
+                    it.labels.find(it3=>it3 == it2.id) != undefined
+                ).length == this.filterLabels.length
+            } )
+            console.log(list)
         }
-
-        list.sort((a, b) => this.compare(a, b) )
 
         var priority = PriorityTypes.Average
         switch(this.filterPriority) {
@@ -176,6 +203,10 @@ export class IssuesList implements OnInit {
         if(this.filterPriority) {
             list = list.filter(it=> it.priority == priority)
         }
+
+        list.sort((a, b) => this.compare(a, b) )
+
+        
 
 
         this.filteredIssues = list;

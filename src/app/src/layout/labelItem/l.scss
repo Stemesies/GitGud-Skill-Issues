@@ -29,16 +29,27 @@
 
 .title {
     display: flex;
-    color: #fff;
+    color: #9198a1;
     justify-content: start;
     align-items: start;
     text-align: start;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: 400;
+    width: 100%;
     justify-content: start;
 }
-.title:hover {
-    cursor: pointer;
-    color: #4493f8;
-    text-decoration: underline;
+
+button.dialog-button {
+    margin: 0.5rem;
+    width: calc(100% - 1rem);
+    justify-content: start;
+}
+
+
+button.delete-button {
+    color: #f85149;
+}
+button.delete-button:hover {
+    background-color: #f851491a;
+    color: #ff7b72;
 }

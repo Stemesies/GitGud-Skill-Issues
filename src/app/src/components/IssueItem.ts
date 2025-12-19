@@ -4,16 +4,16 @@ import { FormsModule } from "@angular/forms";
 import { Issue } from "../model/Issue";
 import { IssueStatus } from "../model/IssueStatus";
 import { Router } from "@angular/router";
-import { GitGudHeader } from "./GitGudHeader";
-import { IssueTrackerService } from "../services/IssueTrackerService";
 import { HistoryTypes } from "../model/HistoryTypes";
 import { History } from "../model/History";
+import { LabelService } from "../services/LabelService";
+import { LabelElement } from "./LabelElement";
 import { PriorityTypes } from "../model/PriorityTypes";
 
 @Component({
     selector: 'issue-item',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, LabelElement],
     templateUrl: '../layout/item/l.html',
     styleUrls: ['../layout/item/l.scss']
 })
@@ -23,6 +23,7 @@ export class IssueItem implements OnInit {
     
     isSelected = false
 
+    @Input() labelService!: LabelService;
     @Input() item!: Issue;
     @Output() select = new EventEmitter<number>();
 

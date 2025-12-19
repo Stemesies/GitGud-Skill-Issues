@@ -2,21 +2,21 @@ import { Component, EventEmitter, inject, Input, OnInit, Optional, Output  } fro
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Issue } from "../model/Issue";
-import { IssueStatus } from "../model/IssueStatus";
 import { Router } from "@angular/router";
-import { HistoryTypes } from "../model/HistoryTypes";
-import { History } from "../model/History";
 import { AccountLogger } from "../services/AccountLogger";
 import { IssueTrackerService } from "../services/IssueTrackerService";
+import { LabelService } from "../services/LabelService";
 import { Observable } from "rxjs";
 import { Account } from "../model/Account";
 import { IssueLogger } from "../services/IssueLogger";
 import { PriorityTypes } from "../model/PriorityTypes";
+import { Label } from "../model/Label";
+import { LabelElement } from "./LabelElement";
 
 @Component({
     selector: 'issue-right-block-settings',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, LabelElement],
     templateUrl: '../layout/issueRightBlockSettings/l.html',
     styleUrls: ['../layout/issueRightBlockSettings/l.scss']
 })
@@ -35,13 +35,21 @@ export class issueRightBlockSettings implements OnInit {
     filteredAssignees: Account[] = []
     assigneeSelected: Account[] = []
 
+    showLabelDropdown = false
+    labelSearchString: string = ""
+    filteredLabels: Label[] = []
+    labelsSelected: number[] = []
+
     showPriorityPropdown = false
     selectedPriority: string = "Average"
 
     showDeletionConfirmation = false
     
-    constructor(private issueTrackerService: IssueTrackerService, private issueLogger: IssueLogger) {
+    labelService: LabelService
+    constructor(private issueTrackerService: IssueTrackerService, private issueLogger: IssueLogger, labelService: LabelService) {
         issueLogger.link(issueTrackerService)
+        labelService.load()
+        this.labelService = labelService
      }
 
     ngOnInit(): void {
@@ -51,9 +59,12 @@ export class issueRightBlockSettings implements OnInit {
             this.issueLogger.linkAL(this.accountLogger)
             this.search()
             this.assigneeSelected = []
+            this.labelsSelected = []
             this.issue.assignees.forEach(it=> this.assigneeSelected.push(it))
+            this.issue.labels.forEach(it=> this.labelsSelected.push(it))
             this.selectedPriority = PriorityTypes[this.issue.priority]
-            console.log("Assignees: ", this.assigneeSelected)
+            console.log("Assignees selected: ", this.assigneeSelected)
+            console.log("Labels selected: ", this.labelsSelected)
         })
     }
 
@@ -63,6 +74,15 @@ export class issueRightBlockSettings implements OnInit {
                 .filter(it => it.username != account.username)
         else
             this.assigneeSelected.push(account)
+    }
+    labelAddOrRemove(account: Label): void {
+        if(this.labelsSelected.includes(account.id))
+            this.labelsSelected = this.labelsSelected
+                .filter(it => it != account.id)
+        else
+            this.labelsSelected.push(account.id)
+
+        console.log("SELECTED LABELS: ", this.labelsSelected)
     }
 
     assignYourself() {
@@ -89,6 +109,9 @@ export class issueRightBlockSettings implements OnInit {
     isSelected(prof: Account) {
         return this.assigneeSelected.find(it=> it.username == prof.username)
     }
+    isLabelSelected(prof: Label) {
+        return this.labelsSelected.find(it=> it == prof.id)
+    }
 
     search() {
         if(!this.assigneeSearchString.trim())
@@ -97,6 +120,14 @@ export class issueRightBlockSettings implements OnInit {
             var f = this.accountLogger?.list!
                 .filter(it=> it.username.includes(this.assigneeSearchString))
             this.filteredAssignees = f ? f : []
+        }
+
+        if(!this.labelSearchString.trim())
+            this.filteredLabels = this.labelService?.list!
+        else {
+            var ff = this.labelService?.list!
+                .filter(it=> it.name.includes(this.labelSearchString))
+            this.filteredLabels = ff ? ff : []
         }
     }
 
@@ -137,6 +168,25 @@ export class issueRightBlockSettings implements OnInit {
             this.issueLogger.changePriority(<Issue> this.issue!, priority)
         }
 
+    }
+
+    label() {
+        if(!this.showLabelDropdown) {
+            if(this.accountLogger?.current != undefined)
+                this.showLabelDropdown = true
+            else
+                console.log("Not logged in")
+            return
+        }
+        this.showLabelDropdown = false
+
+        if(!this.issueExists()) {
+            this.issue.labels = []
+            this.labelsSelected.forEach(it=> this.issue.labels.push(it))
+            console.log("Issue does not exist. Not saving.")
+        } else {
+            this.issueLogger.label(<Issue> this.issue!, this.labelsSelected)
+        }
     }
 
     assignee() {

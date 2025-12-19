@@ -16,6 +16,7 @@ import { AccountLogger } from "../services/AccountLogger";
 import { Title } from "@angular/platform-browser";
 import { IssueLogger } from "../services/IssueLogger";
 import { IssueHistoryDisplayer } from "./IssueHistoryDisplayer";
+import { LabelService } from "../services/LabelService";
 
 @Component({
     selector: 'issues-displayer',
@@ -46,8 +47,11 @@ export class IssueDisplayer implements AfterViewInit {
     @ViewChild(GitGudHeader) ggHeader!: GitGudHeader;
 
     issueTrackerService: IssueTrackerService
-    constructor(private issueLogger: IssueLogger, issueTrackerService: IssueTrackerService, private changeDetectorRef: ChangeDetectorRef, private titleManager: Title) {
+    labelService: LabelService
+    constructor(private issueLogger: IssueLogger, issueTrackerService: IssueTrackerService, private changeDetectorRef: ChangeDetectorRef, private titleManager: Title, labelService: LabelService) {
+        this.labelService = labelService
         this.issueTrackerService = issueTrackerService
+        this.labelService.load()
         this.issueTrackerService.load()
         issueLogger.link(issueTrackerService)
         this.activatedRoute.params.subscribe((params) => {

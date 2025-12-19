@@ -16,7 +16,7 @@
                 </button>
             </div>
 
-            <button class="label-button">
+            <button class="label-button" (click)="this.router.navigate(['/labels'])">
                 <span class="label-button-image">
                     <svg>
                         <path d="M1 7.775V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 0 1 0 2.474l-5.026 5.026a1.75 1.75 0 0 1-2.474 0l-6.25-6.25A1.752 1.752 0 0 1 1 7.775Zm1.5 0c0 .066.026.13.073.177l6.25 6.25a.25.25 0 0 0 .354 0l5.025-5.025a.25.25 0 0 0 0-.354l-6.25-6.25a.25.25 0 0 0-.177-.073H2.75a.25.25 0 0 0-.25.25ZM6 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"></path>
@@ -64,10 +64,10 @@
                     <svg><path d="m4.427 7.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z"></path></svg>
                 </button>
                 <div style="position: relative; left: -200px;" *ngIf="this.showFilters == 'priority'">
-                    <div class="dialog" style="width: 200px;">
-                        <span class="assignee-dropdown-title">Filter by priority</span>
+                    <div class="dialog" style="width: 200px; padding-bottom: 6px;">
+                        <span class="assignee-dropdown-title" style="padding-bottom: .5rem;">Filter by priority</span>
                         <div class="separator"></div>
-                        <button class="trans" style="justify-content: start; width: 100%;" (click)="filterPriority = undefined; load()">
+                        <button class="trans dialog-button" (click)="filterPriority = undefined; load()">
                             <svg>
                                 @if (filterPriority == undefined) {
                                     <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
@@ -77,7 +77,7 @@
                             <span class="assignee-name">Disable filter</span>
                         </button>
                         @for (prof of ['SuperLow', 'Low', 'Average', 'High', 'Extreme']; track $index) {
-                            <button class="trans" style="justify-content: start; width: 100%;" (click)="filterPriority = prof; load()">
+                            <button class="trans dialog-button" (click)="filterPriority = prof; load()">
                                 <svg>
                                     @if (filterPriority == prof) {
                                         <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
@@ -95,11 +95,11 @@
                     <svg><path d="m4.427 7.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z"></path></svg>
                 </button>
                 <div style="position: relative; left: -200px;" *ngIf="this.showFilters == 'author'">
-                    <div class="dialog">
+                    <div class="dialog" style=" padding-bottom: 6px;">
                         <span class="assignee-dropdown-title">Filter by author</span>
                         <input class="search" [(ngModel)]="filterSearchField" placeholder="Filter authors" (input)="searchFilter()">
                         <div class="separator"></div>
-                        <button class="trans" style="justify-content: start; width: 100%;" (click)="filterAuthor = undefined; load()">
+                        <button class="trans dialog-button" (click)="filterAuthor = undefined; load()">
                             <svg>
                                 @if (filterAuthor == undefined) {
                                     <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
@@ -109,7 +109,7 @@
                             <span class="assignee-name">Disable filter</span>
                         </button>
                         @for (prof of authorList; track $index) {
-                            <button class="trans" style="justify-content: start; width: 100%;" (click)="filterAuthor = prof; load()">
+                            <button class="trans dialog-button" (click)="filterAuthor = prof; load()">
                                 <svg>
                                     @if (filterAuthor?.username == prof.username) {
                                         <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
@@ -127,14 +127,38 @@
                     <svg><path d="m4.427 7.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z"></path></svg>
                 </button>
                 <div style="position: relative; left: -200px;" *ngIf="this.showFilters == 'labels'">
-                    <div class="dialog">
+                    <div class="dialog" style=" padding-bottom: 6px;">
                         <span class="assignee-dropdown-title">Filter by label</span>
                         <input class="search" [(ngModel)]="filterSearchField" placeholder="Filter labels" (input)="searchFilter()">
                         <div class="separator"></div>
-                        <!-- <button class="trans" style="justify-content: start; width: 100%;" (click)="filterLabels = undefined; load()">
-                            <svg style="width: 20px; height: 20px;"><path d="M10.561 8.073a6.005 6.005 0 0 1 3.432 5.142.75.75 0 1 1-1.498.07 4.5 4.5 0 0 0-8.99 0 .75.75 0 0 1-1.498-.07 6.004 6.004 0 0 1 3.431-5.142 3.999 3.999 0 1 1 5.123 0ZM10.5 5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z"></path></svg>
-                            <span class="assignee-name">Disable filter</span>
-                        </button> -->
+                        <button class="trans" style="max-height: none; justify-content: start; align-content: start; margin: .5rem; width: calc(100% - 1rem); padding: 6px 8px;" (click)="filterOnlyNoLabels = !filterOnlyNoLabels; load()">
+                            @if (this.filterOnlyNoLabels) {
+                                <div class="checkbox-selected" style="align-self:flex-start;">
+                                    <svg style="color: #fff;"><path d="M9,16.17L4.83,12l-1.42,1.41L9,19 21,7l-1.41,-1.41z"/></svg>
+                                </div>
+                            } @else {
+                                <div class="checkbox" style="align-self:flex-start;"></div>
+                            }
+                            <div class="label-dot" style="background-color: #000; border: 0.0625rem solid #9198a1;"></div>
+                            <span class="assignee-name" style="justify-content: start; font-weight: 600;">No labels</span>
+                        </button>
+                        @for (prof of labelList; track $index) {
+                            <button class="trans" style="max-height: none; justify-content: start; align-content: start; margin: .5rem; width: calc(100% - 1rem); padding: 6px 8px;" (click)="labelAddOrRemove(prof)">
+                                @if (isLabelSelected(prof)) {
+                                    <div class="checkbox-selected" style="align-self:flex-start;">
+                                        <svg style="color: #fff;"><path d="M9,16.17L4.83,12l-1.42,1.41L9,19 21,7l-1.41,-1.41z"/></svg>
+                                    </div>
+                                } @else {
+                                    <div class="checkbox" style="align-self:flex-start;"></div>
+                                }
+                                <div class="label-dot" [style.background-color]="labelService.colorToHex(prof.color)"></div>
+                                <div>
+                                    <span class="assignee-name" style="justify-content: start; font-weight: 600;">{{prof.name}}</span>
+                                    <span class="assignee-name" style="justify-content: start; font-size: .75rem; font-weight: 400; color: #9198a1;">{{prof.description}}</span>
+                                </div>
+                                
+                            </button>
+                        }
 
                     </div>
                 </div>
@@ -143,11 +167,11 @@
                     <svg><path d="m4.427 7.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z"></path></svg>
                 </button>
                 <div style="position: relative; left: -320px;" *ngIf="this.showFilters == 'assignees'">
-                    <div class="dialog">
+                    <div class="dialog" style=" padding-bottom: 6px;">
                         <span class="assignee-dropdown-title">Filter by assignees</span>
                         <input class="search" [(ngModel)]="filterSearchField" placeholder="Filter assignees" (input)="searchFilter()">
                         <div class="separator"></div>
-                        <button class="trans" style="justify-content: start; width: 100%;" (click)="filterAssignees = undefined; load()">
+                        <button class="trans dialog-button" (click)="filterAssignees = undefined; load()">
                             <svg>
                                 @if (filterAssignees == undefined) {
                                     <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
@@ -157,7 +181,7 @@
                             <span class="assignee-name">Disable filter</span>
                         </button>
                         @for (prof of assigneeList; track $index) {
-                            <button class="trans" style="justify-content: start; width: 100%;" (click)="filterAssignees = prof; load()">
+                            <button class="trans dialog-button" (click)="filterAssignees = prof; load()">
                                 <svg>
                                     @if (filterAssignees?.username == prof.username) {
                                         <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
@@ -176,10 +200,10 @@
                     </svg>
                 </button>
                 <div style="position: relative; left: -200px;" *ngIf="this.showFilters == 'more'">
-                    <div class="dialog" style="width: 200px;">
-                        <span class="assignee-dropdown-title">Sort by</span>
+                    <div class="dialog" style="width: 200px; padding-bottom: 6px;">
+                        <span class="assignee-dropdown-title" style="margin-bottom: 4px;">Sort by</span>
                         
-                        <button class="trans" style="justify-content: start; width: 100%;" (click)="sortBy = 'creationTime'; load()">
+                        <button class="trans dialog-button" (click)="sortBy = 'creationTime'; load()">
                             <svg>
                                 @if (sortBy == 'creationTime') {
                                     <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
@@ -187,7 +211,7 @@
                             </svg>
                             <span class="assignee-name">Created On</span>
                         </button>
-                        <button class="trans" style="justify-content: start; width: 100%;" (click)="sortBy = 'updateTime'; load()">
+                        <button class="trans dialog-button" (click)="sortBy = 'updateTime'; load()">
                             <svg>
                                 @if (sortBy == 'updateTime') {
                                     <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
@@ -195,7 +219,7 @@
                             </svg>
                             <span class="assignee-name">Last updated</span>
                         </button>
-                        <button class="trans" style="justify-content: start; width: 100%;" (click)="sortBy = 'priority'; load()">
+                        <button class="trans dialog-button" (click)="sortBy = 'priority'; load()">
                             <svg>
                                 @if (sortBy == 'priority') {
                                     <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
@@ -203,7 +227,7 @@
                             </svg>
                             <span class="assignee-name">Priority</span>
                         </button>
-                        <button class="trans" style="justify-content: start; width: 100%;" (click)="sortBy = 'comments'; load()">
+                        <button class="trans dialog-button" (click)="sortBy = 'comments'; load()">
                             <svg>
                                 @if (sortBy == 'comments') {
                                     <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
@@ -214,9 +238,9 @@
 
                         <div class="separator"></div>
 
-                        <span class="assignee-dropdown-title">Order</span>
+                        <span class="assignee-dropdown-title" style="margin-bottom: 4px;">Order</span>
 
-                        <button class="trans" style="justify-content: start; width: 100%;" (click)="sortOrder = 'ascending'; load()">
+                        <button class="trans dialog-button" (click)="sortOrder = 'ascending'; load()">
                             <svg>
                                 @if (sortOrder == 'ascending') {
                                     <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
@@ -225,7 +249,7 @@
                             <svg style="width: 20px; height: 20px;"><path d="m12.927 2.573 3 3A.25.25 0 0 1 15.75 6H13.5v6.75a.75.75 0 0 1-1.5 0V6H9.75a.25.25 0 0 1-.177-.427l3-3a.25.25 0 0 1 .354 0ZM0 12.25a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5H.75a.75.75 0 0 1-.75-.75Zm0-4a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5H.75A.75.75 0 0 1 0 8.25Zm0-4a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5H.75A.75.75 0 0 1 0 4.25Z"></path></svg>
                             <span class="assignee-name">Ascending</span>
                         </button>
-                        <button class="trans" style="justify-content: start; width: 100%;" (click)="sortOrder = 'descending'; load()">
+                        <button class="trans dialog-button"  (click)="sortOrder = 'descending'; load()">
                             <svg>
                                 @if (sortOrder == 'descending') {
                                     <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
@@ -238,7 +262,7 @@
                     </div>
                 </div>
             </div>
-            <issue-item *ngFor="let item of filteredIssues" [item]="item"/>
+            <issue-item *ngFor="let item of filteredIssues" [item]="item" [labelService]="labelService"></issue-item>
             <div class="list" *ngIf="filteredIssues.length == 0">
                 <div class="no-results" *ngIf="filteredIssues.length == 0">
                     <h3 class="no-results">No results</h3>

@@ -16,7 +16,7 @@
                     <input class="search" [(ngModel)]="assigneeSearchString" placeholder="Filter assignees" (input)="search()">
                     <div class="separator"></div>
                     @for (prof of filteredAssignees; track $index) {
-                        <button class="trans" style="justify-content: start;" (click)="assigneeAddOrRemove(prof)">
+                        <button class="trans" style="justify-content: start; margin: .5rem; width: calc(100% - 1rem);" (click)="assigneeAddOrRemove(prof)">
                             @if (isSelected(prof)) {
                                 <div class="checkbox-selected">
                                     <svg style="color: #fff;"><path d="M9,16.17L4.83,12l-1.42,1.41L9,19 21,7l-1.41,-1.41z"/></svg>
@@ -58,10 +58,10 @@
 
         <div style="position: relative;" *ngIf="showPriorityPropdown">
             <div class="dialog assignee-dropdown">
-                <span class="assignee-dropdown-title">Select priority</span>
+                <span class="assignee-dropdown-title" style="padding-bottom: 8px;">Select priority</span>
                 <div class="separator"></div>
                 @for (prof of ['SuperLow', 'Low', 'Average', 'High', 'Extreme']; track $index) {
-                    <button class="trans" style="justify-content: start;" (click)="selectedPriority = prof">
+                    <button class="trans" style="justify-content: start; margin: .5rem; width: calc(100% - 1rem);" (click)="selectedPriority = prof">
                         <svg>
                             @if (prof == selectedPriority) {
                                 <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
@@ -81,7 +81,7 @@
         <div class="separator"></div>
 
         <div>
-            <button class="trans">
+            <button class="trans" (click)="label()">
                 <span class="l-title">Labels</span>
                 <span>
                     <svg>
@@ -91,6 +91,40 @@
             </button>
             <span class="desc-title no-labels" *ngIf="this.issue.labels.length == 0">No labels</span>
         </div>
+        <div style="position: relative;" *ngIf="showLabelDropdown">
+            <div class="dialog assignee-dropdown">
+                <span class="assignee-dropdown-title">Apply labels to this issue</span>
+                <input class="search" [(ngModel)]="labelSearchString" placeholder="Filter labels" (input)="search()">
+                <div class="separator"></div>
+                @for (prof of filteredLabels; track $index) {
+                    <button class="trans" style="max-height: none; justify-content: start; align-content: start; margin: .5rem; width: calc(100% - 1rem); padding: 6px 8px;" (click)="labelAddOrRemove(prof)">
+                        @if (isLabelSelected(prof)) {
+                            <div class="checkbox-selected" style="align-self:flex-start;">
+                                <svg style="color: #fff;"><path d="M9,16.17L4.83,12l-1.42,1.41L9,19 21,7l-1.41,-1.41z"/></svg>
+                            </div>
+                        } @else {
+                            <div class="checkbox" style="align-self:flex-start;"></div>
+                        }
+                        <div class="label-dot" [style.background-color]="labelService.colorToHex(prof.color)"></div>
+                        <div>
+                            <span class="assignee-name" style="justify-content: start; font-weight: 600;">{{prof.name}}</span>
+                            <span class="assignee-name" style="justify-content: start; font-size: .75rem; font-weight: 400; color: #9198a1;">{{prof.description}}</span>
+                        </div>
+                        
+                    </button>
+                }
+                <div class="separator"></div>
+                <button class="trans" (click)="this.router.navigate(['labels'])" style="margin: .5rem; width: calc(100% - 1rem); justify-content: center;">
+                    <span>Edit labels</span>
+                </button>
+            </div>
+        </div>
+        <div style="display: flex; padding: 8px; padding-top: 4px;">
+            @for (prof of labelService.getLabels(issue.labels, false); track $index) {
+                <label [name]="prof.name" [color]="prof.color"></label>
+            }
+        </div>
+        
 
     @if (issueExists()) {
         <div class="separator"></div>
@@ -101,7 +135,7 @@
             }
         </div>
         <div class="separator"></div>
-        <button class="trans">
+        <!-- <button class="trans">
             <svg>
                 <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
                 <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
@@ -113,7 +147,7 @@
                 <path d="M4 4a4 4 0 0 1 8 0v2h.25c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 12.25 15h-8.5A1.75 1.75 0 0 1 2 13.25v-5.5C2 6.784 2.784 6 3.75 6H4Zm8.25 3.5h-8.5a.25.25 0 0 0-.25.25v5.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25ZM10.5 6V4a2.5 2.5 0 1 0-5 0v2Z"></path>
             </svg>
             <span>Lock conversation</span>
-        </button>
+        </button> -->
         <button class="trans delete-button" (click)="showDeletionConfirmation=true">
             <svg style="color: inherit;">
                 <path d="M11 1.75V3h2.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75ZM4.496 6.675l.66 6.6a.25.25 0 0 0 .249.225h5.19a.25.25 0 0 0 .249-.225l.66-6.6a.75.75 0 0 1 1.492.149l-.66 6.6A1.748 1.748 0 0 1 10.595 15h-5.19a1.75 1.75 0 0 1-1.741-1.575l-.66-6.6a.75.75 0 1 1 1.492-.15ZM6.5 1.75V3h3V1.75a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25Z"></path>
@@ -122,20 +156,20 @@
         </button>
         <div class="dialog deletion-dialog-parent" *ngIf="showDeletionConfirmation">
             <div class="dialog deletion-dialog">
-                <div style="display: flex;">
-                    <span style="flex-grow: 1; font-weight: 600; justify-content: start;">Delete issue?</span>
+                <div style="display: flex; padding: .5rem;">
+                    <span style="flex-grow: 1; font-weight: 600; justify-content: start; padding: 6px 8px; font-size: 1rem;">Delete issue?</span>
                     <button class="trans" style="width: 32px;">
                         <svg>
                             <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"></path>
                         </svg>
                     </button>
                 </div>
-                <ul>
+                <ul style="margin: 0px;">
                     <li>This cannot be undone</li>
                     <li>Only adminstrators can delete issues</li>
                     <li>Deletion will remove the issue from search and previous references will point to a placeholder</li>
                 </ul>
-                <div style="display: flex; gap: 8px;">
+                <div style="display: flex; gap: 8px; padding: .25rem 1rem 1rem;">
                     <div class="space"></div>
                     <button (click)="showDeletionConfirmation = false">
                         <span>Close</span>

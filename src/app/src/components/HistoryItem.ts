@@ -11,11 +11,14 @@ import { AssignmentHistory } from "../model/histData/AssignmentHistory";
 import { RenameHistory } from "../model/histData/RenameHistory";
 import { PriorityHistory } from "../model/histData/PriorityHistory";
 import { PriorityTypes } from "../model/PriorityTypes";
+import { LabelHistory } from "../model/histData/LabelHistory";
+import { LabelService } from "../services/LabelService";
+import { LabelElement } from "./LabelElement";
 
 @Component({
     selector: 'history-item',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, LabelElement],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     templateUrl: '../layout/hist-item/l.html',
     styleUrls: ['../layout/hist-item/l.scss']
@@ -24,6 +27,7 @@ import { PriorityTypes } from "../model/PriorityTypes";
 export class HistoryItem {
     
     @Input() item!: History;
+    @Input() labelService!: LabelService;
 
     getDatetime() {
         return new Date(this.item.created).toISOString()
@@ -77,4 +81,21 @@ export class HistoryItem {
     getPriorityString() {
         return PriorityTypes[this.dataAsPriorityHistory().newPriority]
     }
+
+    isLabel() {
+        return this.item.type == HistoryTypes.Label
+    }
+    dataAsLabelHistory() {
+        return this.item.data as LabelHistory
+    }
+
+    getAddedLabels() {
+        return this.labelService.getLabels(this.dataAsLabelHistory().added)
+    }
+
+    getRemovedLabels() {
+        return this.labelService.getLabels(this.dataAsLabelHistory().removed)
+    }
+
+
 }
