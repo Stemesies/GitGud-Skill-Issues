@@ -10,6 +10,7 @@ import { IssueStatus } from "../model/IssueStatus";
 import { Account } from "../model/Account";
 import { Label } from "../model/Label";
 import { PriorityTypes } from "../model/PriorityTypes";
+import { HistoryTypes } from "../model/HistoryTypes";
 
 @Component({
     selector: 'issues-list',
@@ -28,9 +29,12 @@ export class IssuesList implements OnInit {
     searchDraft = '';
 
     filterSearchField = ""
-    showFilters: 'priority' | 'author' | 'labels' | 'assignees' | 'none' = 'none'
+    showFilters: 'more' | 'priority' | 'author' | 'labels' | 'assignees' | 'none' = 'none'
     filterStatus: 'closed' | 'open' = 'open'
     selectedAll = false
+
+    sortBy: 'creationTime' | 'updateTime' | 'priority' | 'comments' = 'creationTime'
+    sortOrder: 'descending' | 'ascending' = 'descending'
 
     filterPriority: string | undefined = undefined
     filterAssignees: Account | undefined = undefined
@@ -72,10 +76,44 @@ export class IssuesList implements OnInit {
         }
     }
 
-    switchFilterDialog(a: 'priority' | 'author' | 'labels' | 'assignees' | 'none') {
+    switchFilterDialog(a: 'more' | 'priority' | 'author' | 'labels' | 'assignees' | 'none') {
         this.filterSearchField = ''
         this.showFilters = this.showFilters == a? 'none' : a
         this.searchFilter()
+    }
+
+    compare(a: Issue, b: Issue): number {
+        switch(this.sortBy) {
+            case "creationTime": {
+                if(this.sortOrder == 'descending')
+                    return b.created - a.created;
+                else
+                    return a.created - b.created;
+            }
+            case "updateTime": {
+                var al = a.history.length == 0 ? a.created : a.history[a.history.length-1].created
+                var bl = b.history.length == 0 ? b.created : b.history[b.history.length-1].created
+                if(this.sortOrder == 'descending')
+                    return bl - al;
+                else
+                    return al - bl;
+            }
+            case "priority": {
+                if(this.sortOrder == 'descending')
+                    return b.priority - a.priority 
+                else
+                    return a.priority - b.priority
+            }
+            case "comments": {
+                var al1 = a.history.filter(it=>it.type == HistoryTypes.Comment)
+                var bl1 = b.history.filter(it=>it.type == HistoryTypes.Comment)
+                if(this.sortOrder == 'descending')
+                    return (bl1? bl1: []).length - (al1 ? al1 : []).length
+                else 
+                    return (al1? al1: []).length - (bl1 ? bl1 : []).length
+                
+            }
+        }
     }
 
     load() {
@@ -109,6 +147,8 @@ export class IssuesList implements OnInit {
             //     it.labels.find(it2=>it2.name == this.filterLabels?.name) != undefined
             // } )
         }
+
+        list.sort((a, b) => this.compare(a, b) )
 
         var priority = PriorityTypes.Average
         switch(this.filterPriority) {
