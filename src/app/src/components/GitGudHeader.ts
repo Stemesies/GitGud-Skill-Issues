@@ -5,11 +5,13 @@ import { AccountLogger } from "../services/AccountLogger";
 import { Account } from "../model/Account";
 import { Observable, of } from "rxjs";
 import { Router } from "@angular/router";
+import { ToastService } from "../services/ToastService";
+import { Toast } from "./Toast";
 
 @Component({
     selector: 'gigut-header',
     standalone: true,
-    imports: [ CommonModule, FormsModule ],
+    imports: [ CommonModule, FormsModule, Toast ],
     templateUrl: '../layout/gitGudHeader/l.html',
     styleUrls: ['../layout/gitGudHeader/l.scss']
 })
@@ -29,7 +31,7 @@ export class GitGudHeader implements OnInit {
 
     state: 'register' | 'login' | 'none' = 'none'
 
-    constructor(accountLogger: AccountLogger) {
+    constructor(accountLogger: AccountLogger, private toastService: ToastService) {
         this.accountLogger = accountLogger;
         accountLogger.load()
         this.account = accountLogger.current;
@@ -50,14 +52,20 @@ export class GitGudHeader implements OnInit {
         }
         if(this.account != undefined)
             return;
-        if(this.username.length == 0)
+        this.state = 'none'
+        if(this.username.length == 0) {
+            this.error = 'Username can not be empty.'
             return;
+        }
         this.account = this.accountLogger.logIn(this.username)
 
         if(this.account == undefined)
             this.error = 'Unknown user.'
 
-        this.state = 'none'
+        
+
+        if(this.account != undefined)
+            this.toastService.showToast("logged in as " + this.username)
     }
 
     register() {
@@ -68,6 +76,8 @@ export class GitGudHeader implements OnInit {
         }
         if(this.account != undefined)
             return;
+         this.state = 'none'
+
         if(this.username.length == 0) {
             this.error = 'Username can not be empty.'
             return;
@@ -76,7 +86,9 @@ export class GitGudHeader implements OnInit {
         if(this.account == undefined)
             this.error = 'Username already exists.'
         
-        this.state = 'none'
+       
+        if(this.account != undefined)
+            this.toastService.showToast("Successfully registered as " + this.username)
         
     }
 
@@ -84,5 +96,6 @@ export class GitGudHeader implements OnInit {
         this.account = undefined
         this.accountLogger.logOut()
         this.state = 'none'
+        this.toastService.showToast("logged out")
     }
 }

@@ -1,17 +1,26 @@
 <gigut-header [issueCount$]="issueTrackerService.issueCount$"></gigut-header>
-<h2>Create new issue</h2>
+<div class="header">
+    @if (account == undefined) {
+        <svg class="pfp" style="margin-right: 1rem; width: 32px; height: 32px;">
+
+        </svg>
+    } @else {
+        <img class="pfp" src="{{this.account.pfp}}" style="margin-right: 1rem;">
+    }
+    <h2 class="title">Create new issue</h2>
+</div>
 <div class="host">
     <div class="left-block">
         
         <b class="l-sub"><span>Add a title</span><span style="color: red;">*</span></b>
-        <input [(ngModel)]="issue.title" (input)="triedToSaveWithoutName = false">
+        <input [(ngModel)]="issue.title" placeholder="Title" (input)="triedToSaveWithoutName = false">
         <span *ngIf="triedToSaveWithoutName" style="color: #f85149;">Title can not be empty</span>
-        <b class="l-sub"><span>Add a description</span></b>
-        <textarea [(ngModel)]="issue.description" class="textarea"></textarea>
+        <b class="l-sub" style="margin-top: 1rem;"><span>Add a description</span></b>
+        <textarea [(ngModel)]="issue.description" placeholder="Type your description here..." class="textarea"></textarea>
         <div style="display: flex; margin-top: 32px; align-items: center;">
             <div style="flex-grow: 1;"></div>
-            <input type="checkbox" class="create-more-checkbox">
-            <span style="padding-left: 8px;">Create more</span>
+            <input type="checkbox" class="create-more-checkbox" [(ngModel)]="createMore">
+            <span style="padding-left: 8px;" (click)="createMore = !createMore">Create more</span>
             <button class="cancel-button" (click)="dismiss()"><span>Cancel</span></button>
             <button class="create-button" (click)="create()"><span>Create</span></button>
         </div>

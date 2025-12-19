@@ -111,7 +111,7 @@ div.logout-message {
     max-height: 35lh;
     box-sizing: border-box;
     padding: 1rem;
-    field-sizing: content;
+    resize: vertical;
     overflow-wrap: anywhere;
     height: 10lh;
     max-width: calc(100% - 56px);

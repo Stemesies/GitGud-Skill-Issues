@@ -5,7 +5,7 @@
         <span class="title">{{issue?.title}}</span>
         <span class="id">#{{issue?.id}}</span>
         <div class="space"></div>
-        <button class="edit-button" (click)="renaming = true">
+        <button class="edit-button" (click)="startRenaming()">
             <span>Edit</span>
         </button>
         <button class="new-issue-button" (click)="this.router.navigate(['/new'])">

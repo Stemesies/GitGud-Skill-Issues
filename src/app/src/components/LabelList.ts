@@ -9,6 +9,7 @@ import { Label } from "../model/Label";
 import { LabelService } from "../services/LabelService";
 import { LabelItem } from "./LabelItem";
 import { LabelElement } from "./LabelElement";
+import { ToastService } from "../services/ToastService";
 
 @Component({
     selector: 'label-list',
@@ -43,7 +44,7 @@ export class LabelList implements OnInit {
 
     issueTrackerService: IssueTrackerService
     labelService: LabelService
-    constructor(issueTrackerService: IssueTrackerService, labelService: LabelService) {
+    constructor(issueTrackerService: IssueTrackerService, labelService: LabelService, private toastService: ToastService) {
         issueTrackerService.load()
         labelService.load()
 
@@ -134,6 +135,7 @@ export class LabelList implements OnInit {
             return
         }
         this.labelService.addItem(this.newLabel)
+        this.toastService.showToast("Created new label " + this.newLabel.name)
         this.resetNewLabel()
     }
 
@@ -143,6 +145,7 @@ export class LabelList implements OnInit {
         this.labelToEdit!.description = this.newLabel.description
         this.labelToEdit!.color = this.newLabel.color
         this.labelService.save()
+        this.toastService.showToast("Updated label " + this.labelToEdit?.name)
         this.discardCreatingOrEditing()
     }
 
@@ -163,6 +166,7 @@ export class LabelList implements OnInit {
     deleteLabel() {
         console.log("Deleting ", this.labelToEdit?.name)
         this.labelService.deleteItem(this.labelToEdit!);
+        this.toastService.showToast("Deleted label " + this.labelToEdit?.name)
         this.load()
         this.discardCreatingOrEditing()
     }

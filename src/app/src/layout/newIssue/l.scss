@@ -1,6 +1,13 @@
 div.host {
     display:flex;
     gap: 32px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding-left: calc(32px + 16px + 16px);
+}
+
+.pfp {
+    margin: 0px 16px;
 }
 
 div.left-block {
@@ -8,10 +15,30 @@ div.left-block {
     max-width: 960px;
 }
 
+.header {
+    
+    display: flex;
+    margin: 0 auto;
+    margin-top: 16px;
+    height: 32px;
+    width: 100%;
+    max-width: calc(1280px + 32px + 16px + 16px);
+}
+
+.title {
+    align-content: center;
+    text-align: start;
+    font-size: 1rem;
+    margin: 0px;
+    font-weight: 600;
+    width: 1280px;
+    max-width: 1280px;
+}
 
 
 .l-sub {
     display: flex;
+    font-weight: 600;
 }
 
 input {
@@ -25,9 +52,10 @@ input {
 .textarea {
     min-height: 20lh;
     max-height: 35lh;
-    box-sizing: content-box;
-    field-sizing: content;
+    box-sizing: border-box;
+    resize: vertical;
     overflow-wrap: anywhere;
+    padding: 1rem !important;
     height: 359px;
     max-width: 100%;
     min-width: 100%;

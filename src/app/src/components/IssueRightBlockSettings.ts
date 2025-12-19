@@ -12,6 +12,7 @@ import { IssueLogger } from "../services/IssueLogger";
 import { PriorityTypes } from "../model/PriorityTypes";
 import { Label } from "../model/Label";
 import { LabelElement } from "./LabelElement";
+import { ToastService } from "../services/ToastService";
 
 @Component({
     selector: 'issue-right-block-settings',
@@ -46,7 +47,7 @@ export class issueRightBlockSettings implements OnInit {
     showDeletionConfirmation = false
     
     labelService: LabelService
-    constructor(private issueTrackerService: IssueTrackerService, private issueLogger: IssueLogger, labelService: LabelService) {
+    constructor(private issueTrackerService: IssueTrackerService, private issueLogger: IssueLogger, labelService: LabelService, private toastService: ToastService) {
         issueLogger.link(issueTrackerService)
         labelService.load()
         this.labelService = labelService
@@ -135,8 +136,10 @@ export class issueRightBlockSettings implements OnInit {
         if(!this.showPriorityPropdown) {
             if(this.accountLogger?.current != undefined)
                 this.showPriorityPropdown = true
-            else
+            else {
                 console.log("Not logged in")
+                this.toastService.showToast("You are not logged in")
+            }
             return
         }
         this.showPriorityPropdown = false
@@ -167,6 +170,7 @@ export class issueRightBlockSettings implements OnInit {
         } else {
             this.issueLogger.changePriority(<Issue> this.issue!, priority)
         }
+        this.toastService.showToast("Successfully updated priority")
 
     }
 
@@ -174,8 +178,10 @@ export class issueRightBlockSettings implements OnInit {
         if(!this.showLabelDropdown) {
             if(this.accountLogger?.current != undefined)
                 this.showLabelDropdown = true
-            else
+            else {
                 console.log("Not logged in")
+                this.toastService.showToast("You are not logged in")
+            }
             return
         }
         this.showLabelDropdown = false
@@ -187,14 +193,17 @@ export class issueRightBlockSettings implements OnInit {
         } else {
             this.issueLogger.label(<Issue> this.issue!, this.labelsSelected)
         }
+        this.toastService.showToast("Successfully updated label list")
     }
 
     assignee() {
         if(!this.showAssigneeDropdown) {
             if(this.accountLogger?.current != undefined)
                 this.showAssigneeDropdown = true
-            else
+            else {
                 console.log("Not logged in")
+                this.toastService.showToast("You are not logged in")
+            }
             return
         }
         this.showAssigneeDropdown = false
@@ -206,12 +215,14 @@ export class issueRightBlockSettings implements OnInit {
         } else {
             this.issueLogger.assignee(<Issue> this.issue!, this.assigneeSelected)
         }
+        this.toastService.showToast("Successfully updated assignee list")
 
     }
 
     getParticipants() {
         var notHashseted = this.issue.history.map(it=>it.owner)
         var hashset: Account[] = []
+        hashset.push(this.issue.owner)
         notHashseted.forEach(it=> {
             if(!hashset.find(it2=> it2.username == it.username)) {
                 hashset.push(it)
@@ -220,11 +231,22 @@ export class issueRightBlockSettings implements OnInit {
         return hashset
     }
 
+    showDeleteIssue() {
+        if(this.accountLogger?.current == undefined) {
+            console.log("Not logged in")
+            this.toastService.showToast("You are not logged in")
+            return
+        }
+        
+        this.showDeletionConfirmation=true
+    }
+
     deleteIssue() {
         if(!this.issueExists())
             return
 
         this.issueTrackerService.deleteItem((<Issue>this.issue).id)
         this.router.navigate(['/'])
+        this.toastService.showToast("Deleted issue " + this.issue.title)
     }
 }

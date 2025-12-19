@@ -17,6 +17,7 @@ import { Title } from "@angular/platform-browser";
 import { IssueLogger } from "../services/IssueLogger";
 import { IssueHistoryDisplayer } from "./IssueHistoryDisplayer";
 import { LabelService } from "../services/LabelService";
+import { ToastService } from "../services/ToastService";
 
 @Component({
     selector: 'issues-displayer',
@@ -48,7 +49,7 @@ export class IssueDisplayer implements AfterViewInit {
 
     issueTrackerService: IssueTrackerService
     labelService: LabelService
-    constructor(private issueLogger: IssueLogger, issueTrackerService: IssueTrackerService, private changeDetectorRef: ChangeDetectorRef, private titleManager: Title, labelService: LabelService) {
+    constructor(private issueLogger: IssueLogger, issueTrackerService: IssueTrackerService, private changeDetectorRef: ChangeDetectorRef, private titleManager: Title, labelService: LabelService, private toastService: ToastService) {
         this.labelService = labelService
         this.issueTrackerService = issueTrackerService
         this.labelService.load()
@@ -92,6 +93,15 @@ export class IssueDisplayer implements AfterViewInit {
         this.newName = this.issue!.title
     }
 
+    startRenaming() {
+        if(this.account == undefined) {
+            console.log("Not logged in")
+            this.toastService.showToast("You are not logged in")
+            return
+        }
+        this.renaming = true
+    }
+
     rename() {
         if(!this.newName.trim()) {
             this.triedToSaveWithoutName = true
@@ -105,6 +115,7 @@ export class IssueDisplayer implements AfterViewInit {
         this.issueLogger.rename(this.issue!, this.newName)
         this.renaming = false
         this.titleManager.setTitle(this.issue!.title + " · " + "Issue #" + this.issue!.id)
+        this.toastService.showToast("Successfully renamed issue")
     }
 
     
@@ -124,6 +135,7 @@ export class IssueDisplayer implements AfterViewInit {
         this.issueLogger.postComment(this.issue!, this.comment)
 
         this.comment = ""
+        this.toastService.showToast("Successfully posted comment")
     }
 
     closeIssue() {
@@ -139,5 +151,6 @@ export class IssueDisplayer implements AfterViewInit {
         this.issueLogger.closeIssue(this.issue!, newStatus)
 
         this.closureType = this.issue!.status == IssueStatus.Open? 'close' : 'reopen'
+        this.toastService.showToast("Successfully updated issue status")
     }
 }

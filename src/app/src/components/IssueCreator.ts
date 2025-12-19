@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, model, NgModule, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, inject, model, NgModule, OnInit, ViewChild } from "@angular/core";
 import { Issue } from "../model/Issue";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
@@ -11,6 +11,8 @@ import { Account } from "../model/Account";
 import { Subject, Observable } from "rxjs";
 import { AccountLogger } from "../services/AccountLogger";
 import { PriorityTypes } from "../model/PriorityTypes";
+import { Toast } from "./Toast";
+import { ToastService } from "../services/ToastService";
 
 @Component({
     selector: 'issues-list',
@@ -27,6 +29,8 @@ export class IssueCreator implements OnInit, AfterViewInit {
     @ViewChild(GitGudHeader) ggHeader!: GitGudHeader;
     private accountSubject: Subject<AccountLogger> = new Subject()
     accountLogger$: Observable<AccountLogger> = this.accountSubject.asObservable()
+
+    createMore = false
     
     issue: Omit<Issue, 'id'> = {
         status: IssueStatus.Open,
@@ -49,14 +53,17 @@ export class IssueCreator implements OnInit, AfterViewInit {
                 this.account = it
             })
 
+        
         this.account = this.ggHeader.accountLogger.current;
+        console.log("IssueCreator: current account: ", this.account)
         this.accountSubject.next(this.ggHeader.accountLogger)
+        this.changeDetectorRef.detectChanges()
     }
 
     triedToSaveWithoutName: boolean = false
 
     issueTrackerService: IssueTrackerService
-    constructor(issueTrackerService: IssueTrackerService) {
+    constructor(issueTrackerService: IssueTrackerService, private changeDetectorRef: ChangeDetectorRef, private toastService: ToastService) {
         this.issueTrackerService = issueTrackerService
     }
 
@@ -77,14 +84,34 @@ export class IssueCreator implements OnInit, AfterViewInit {
     }
 
     create() {
+        if(this.account == undefined) {
+            this.toastService.showToast("You are not logged in")
+            return;
+        }
+        
         if(this.issue.title == "") {
             this.triedToSaveWithoutName = true
             return;
         }
-        if(this.account == undefined)
-            return;
+        
+        
         this.issue.owner = this.account;
         var id = this.issueTrackerService.addItem(this.issue)
-        this.router.navigate(['/', id.toString()])
+        if(this.createMore) {
+            this.issue = {
+                status: IssueStatus.Open,
+                title: "",
+                description: "",
+                owner: { pfp:"", username:""},
+                created: Date.now(),
+                updated: Date.now(),
+                priority: PriorityTypes.Average,
+                assignees: [],
+                labels: [],
+                history: []
+            }; 
+        } else {
+            this.router.navigate(['/', id.toString()])
+        }
     }
 }
