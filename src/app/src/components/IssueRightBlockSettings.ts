@@ -11,6 +11,7 @@ import { IssueTrackerService } from "../services/IssueTrackerService";
 import { Observable } from "rxjs";
 import { Account } from "../model/Account";
 import { IssueLogger } from "../services/IssueLogger";
+import { PriorityTypes } from "../model/PriorityTypes";
 
 @Component({
     selector: 'issue-right-block-settings',
@@ -34,6 +35,9 @@ export class issueRightBlockSettings implements OnInit {
     filteredAssignees: Account[] = []
     assigneeSelected: Account[] = []
 
+    showPriorityPropdown = false
+    selectedPriority: string = "Average"
+
     showDeletionConfirmation = false
     
     constructor(private issueTrackerService: IssueTrackerService, private issueLogger: IssueLogger) {
@@ -48,6 +52,7 @@ export class issueRightBlockSettings implements OnInit {
             this.search()
             this.assigneeSelected = []
             this.issue.assignees.forEach(it=> this.assigneeSelected.push(it))
+            this.selectedPriority = PriorityTypes[this.issue.priority]
             console.log("Assignees: ", this.assigneeSelected)
         })
     }
@@ -95,6 +100,45 @@ export class issueRightBlockSettings implements OnInit {
         }
     }
 
+    selectPriority() {
+        if(!this.showPriorityPropdown) {
+            if(this.accountLogger?.current != undefined)
+                this.showPriorityPropdown = true
+            else
+                console.log("Not logged in")
+            return
+        }
+        this.showPriorityPropdown = false
+
+        var priority = PriorityTypes.Average
+        switch(this.selectedPriority) {
+            case 'SuperLow': {
+                priority = PriorityTypes.SuperLow
+                break
+            }
+            case 'Low': {
+                priority = PriorityTypes.Low
+                 break
+            }
+            case 'High': {
+                priority = PriorityTypes.High
+                 break
+            }
+            case 'Extreme': {
+                priority = PriorityTypes.Extreme
+                 break
+            }
+        }
+
+        if(!this.issueExists()) {
+            this.issue.priority = priority
+            console.log("Issue does not exist. Not saving.")
+        } else {
+            this.issueLogger.changePriority(<Issue> this.issue!, priority)
+        }
+
+    }
+
     assignee() {
         if(!this.showAssigneeDropdown) {
             if(this.accountLogger?.current != undefined)
@@ -106,7 +150,6 @@ export class issueRightBlockSettings implements OnInit {
         this.showAssigneeDropdown = false
 
         if(!this.issueExists()) {
-            this.issue.history = this.issue.history.filter(it=>it.type != HistoryTypes.Assign)
             this.issue.assignees = []
             this.assigneeSelected.forEach(it=> this.issue.assignees.push(it))
             console.log("Issue does not exist. Not saving.")

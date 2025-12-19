@@ -10,6 +10,7 @@ import { GitGudHeader } from "./GitGudHeader";
 import { Account } from "../model/Account";
 import { Subject, Observable } from "rxjs";
 import { AccountLogger } from "../services/AccountLogger";
+import { PriorityTypes } from "../model/PriorityTypes";
 
 @Component({
     selector: 'issues-list',
@@ -34,6 +35,7 @@ export class IssueCreator implements OnInit, AfterViewInit {
         owner: { pfp:"", username:""},
         created: Date.now(),
         updated: Date.now(),
+        priority: PriorityTypes.Average,
         assignees: [],
         labels: [],
         history: []

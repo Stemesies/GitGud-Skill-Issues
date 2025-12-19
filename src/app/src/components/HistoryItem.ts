@@ -9,6 +9,8 @@ import { ClosureHistory } from "../model/histData/ClosureHistory";
 import { IssueStatus } from "../model/IssueStatus";
 import { AssignmentHistory } from "../model/histData/AssignmentHistory";
 import { RenameHistory } from "../model/histData/RenameHistory";
+import { PriorityHistory } from "../model/histData/PriorityHistory";
+import { PriorityTypes } from "../model/PriorityTypes";
 
 @Component({
     selector: 'history-item',
@@ -64,5 +66,15 @@ export class HistoryItem {
     }
     dataAsRenameHistory() {
         return this.item.data as RenameHistory
+    }
+
+    isPriority() {
+        return this.item.type == HistoryTypes.Priority
+    }
+    dataAsPriorityHistory() {
+        return this.item.data as PriorityHistory
+    }
+    getPriorityString() {
+        return PriorityTypes[this.dataAsPriorityHistory().newPriority]
     }
 }

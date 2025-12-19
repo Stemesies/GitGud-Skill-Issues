@@ -8,6 +8,7 @@ import { GitGudHeader } from "./GitGudHeader";
 import { IssueTrackerService } from "../services/IssueTrackerService";
 import { HistoryTypes } from "../model/HistoryTypes";
 import { History } from "../model/History";
+import { PriorityTypes } from "../model/PriorityTypes";
 
 @Component({
     selector: 'issue-item',
@@ -46,5 +47,9 @@ export class IssueItem implements OnInit {
 
     gotoIssue() {
         this.router.navigate(['/', this.item.id.toString()])
+    }
+
+    getPriority() {
+        return PriorityTypes[this.item.priority]
     }
 }

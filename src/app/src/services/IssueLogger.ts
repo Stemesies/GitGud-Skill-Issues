@@ -6,6 +6,7 @@ import { AccountLogger } from "./AccountLogger";
 import { History } from "../model/History";
 import { IssueStatus } from "../model/IssueStatus";
 import { Account } from "../model/Account";
+import { PriorityTypes } from "../model/PriorityTypes";
 
 
 @Injectable({
@@ -108,6 +109,32 @@ export class IssueLogger {
         this.issueTrackerService!.save()
     }
 
+    changePriority(issue: Issue, newPriority: PriorityTypes) {
+        if(issue.priority == undefined)
+            issue.priority = PriorityTypes.Average
+
+        if(issue.priority == newPriority) {
+            return
+        }
+
+        if(!this.requireServiceConnection())
+            return
+
+        console.log("Setting priority: " + issue.title)
+
+        var history: History = {
+            type: HistoryTypes.Priority,
+            created: Date.now(),
+            owner: this.accountLogger!.current!,
+            data: {
+                newPriority: newPriority
+            }
+        }
+        issue.priority = newPriority
+        issue.history.push(history)
+        this.issueTrackerService!.save()
+    }
+
     assignYourself(issue: Issue) {
         if(!this.requireServiceConnection())
             return
@@ -135,12 +162,13 @@ export class IssueLogger {
         var removed: Account[] = []
 
         newList.forEach(neww => { 
-            if(issue.assignees.find(it=>it.username == neww.username)) added.push(neww)
+            if(!issue.assignees.find(it=>it.username == neww.username)) added.push(neww)
         })
         issue.assignees.forEach(neww => { 
             if(!newList.find(it=>it.username == neww.username)) removed.push(neww)
         })
 
+        console.log("Issue Assignees: ", issue.assignees)
         console.log("Added: ", added)
         console.log("Removed: ", removed)
 

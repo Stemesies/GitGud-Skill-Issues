@@ -1,3 +1,3 @@
 export enum HistoryTypes {
-    Comment, Closure, Assign, Label, Rename
+    Comment, Closure, Assign, Label, Rename, Priority
 }

@@ -9,6 +9,7 @@ import { GitGudHeader } from "./GitGudHeader";
 import { IssueStatus } from "../model/IssueStatus";
 import { Account } from "../model/Account";
 import { Label } from "../model/Label";
+import { PriorityTypes } from "../model/PriorityTypes";
 
 @Component({
     selector: 'issues-list',
@@ -27,10 +28,11 @@ export class IssuesList implements OnInit {
     searchDraft = '';
 
     filterSearchField = ""
-    showFilters: 'author' | 'labels' | 'assignees' | 'none' = 'none'
+    showFilters: 'priority' | 'author' | 'labels' | 'assignees' | 'none' = 'none'
     filterStatus: 'closed' | 'open' = 'open'
     selectedAll = false
 
+    filterPriority: string | undefined = undefined
     filterAssignees: Account | undefined = undefined
     filterAuthor: Account | undefined = undefined
     filterOnlyNoLabels = true
@@ -70,7 +72,7 @@ export class IssuesList implements OnInit {
         }
     }
 
-    switchFilterDialog(a: 'author' | 'labels' | 'assignees' | 'none') {
+    switchFilterDialog(a: 'priority' | 'author' | 'labels' | 'assignees' | 'none') {
         this.filterSearchField = ''
         this.showFilters = this.showFilters == a? 'none' : a
         this.searchFilter()
@@ -107,6 +109,30 @@ export class IssuesList implements OnInit {
             //     it.labels.find(it2=>it2.name == this.filterLabels?.name) != undefined
             // } )
         }
+
+        var priority = PriorityTypes.Average
+        switch(this.filterPriority) {
+            case 'SuperLow': {
+                priority = PriorityTypes.SuperLow
+                break
+            }
+            case 'Low': {
+                priority = PriorityTypes.Low
+                 break
+            }
+            case 'High': {
+                priority = PriorityTypes.High
+                 break
+            }
+            case 'Extreme': {
+                priority = PriorityTypes.Extreme
+                 break
+            }
+        }
+        if(this.filterPriority) {
+            list = list.filter(it=> it.priority == priority)
+        }
+
 
         this.filteredIssues = list;
         console.log(this.filteredIssues)

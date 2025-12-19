@@ -20,7 +20,7 @@
 </div>
 <div style="flex-grow: 10;">
     <a class="title" (click)="gotoIssue()">{{item.title}}</a>
-    <span style="width: 100%; justify-content: start; color: #9198a1; font-size: 0.75rem;">#{{item.id}} · by {{item.owner.username}}</span>
+    <span style="width: 100%; justify-content: start; color: #9198a1; font-size: 0.75rem;">#{{item.id}} · by {{item.owner.username}} · {{getPriority()}} priority</span>
 </div>
 @if (comments.length > 0) {
     <div style="display: flex; flex-grow: 1; justify-content: center; gap: 2px;">
