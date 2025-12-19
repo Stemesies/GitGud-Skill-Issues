@@ -15,11 +15,12 @@ import { Observable, Subject } from "rxjs";
 import { AccountLogger } from "../services/AccountLogger";
 import { Title } from "@angular/platform-browser";
 import { IssueLogger } from "../services/IssueLogger";
+import { IssueHistoryDisplayer } from "./IssueHistoryDisplayer";
 
 @Component({
     selector: 'issues-displayer',
     standalone: true,
-    imports: [CommonModule, FormsModule, issueRightBlockSettings, GitGudHeader, HistoryItem],
+    imports: [CommonModule, FormsModule, issueRightBlockSettings, GitGudHeader, IssueHistoryDisplayer],
     templateUrl: '../layout/issueDisplayer/l.html',
     styleUrls: ['../layout/issueDisplayer/l.scss']
 })
@@ -44,7 +45,9 @@ export class IssueDisplayer implements AfterViewInit {
 
     @ViewChild(GitGudHeader) ggHeader!: GitGudHeader;
 
-    constructor(private issueLogger: IssueLogger, private issueTrackerService: IssueTrackerService, private changeDetectorRef: ChangeDetectorRef, private titleManager: Title) {
+    issueTrackerService: IssueTrackerService
+    constructor(private issueLogger: IssueLogger, issueTrackerService: IssueTrackerService, private changeDetectorRef: ChangeDetectorRef, private titleManager: Title) {
+        this.issueTrackerService = issueTrackerService
         this.issueTrackerService.load()
         issueLogger.link(issueTrackerService)
         this.activatedRoute.params.subscribe((params) => {
@@ -130,7 +133,7 @@ export class IssueDisplayer implements AfterViewInit {
             newStatus = IssueStatus.Open;
 
         this.issueLogger.closeIssue(this.issue!, newStatus)
-        
+
         this.closureType = this.issue!.status == IssueStatus.Open? 'close' : 'reopen'
     }
 }

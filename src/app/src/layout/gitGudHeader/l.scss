@@ -5,9 +5,16 @@
 .host {
     width: 100%;
     background-color: black;
-    padding-bottom: 32px;
     border-bottom: 0.0625rem solid;
     border-bottom-color: var(--border-color);
+}
+
+.filter-counter {
+    background-color: #656c7633;
+    font-size: 0.75rem;
+    border: 0.0625rem solid #00000000;
+    border-radius: 20px;
+    min-width: 20px;
 }
 
 input {

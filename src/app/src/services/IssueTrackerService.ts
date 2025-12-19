@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Issue } from "../model/Issue";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
 
 
 @Injectable({
@@ -10,6 +11,11 @@ export class IssueTrackerService {
     private readonly KEY = "issues"
     
     list: Issue[] = [];
+    issueCount: BehaviorSubject<number> = new BehaviorSubject(0);
+    issueCount$: Observable<number> = this.issueCount.asObservable()
+
+
+
     maxId: number = 1;
 
     load(): Issue[] {
@@ -22,12 +28,12 @@ export class IssueTrackerService {
 
         var json = localStorage.getItem(this.KEY)
         this.list = json ? JSON.parse(json) : []
+        this.issueCount.next(this.list.length)
         return this.list
     }
 
     save() {
         localStorage.setItem(this.MAX_ID_KEY, this.maxId.toString())
-        
         var json = JSON.stringify(this.list)
         localStorage.setItem(this.KEY, json)
     }
@@ -36,20 +42,13 @@ export class IssueTrackerService {
         var item = {  ...omitItem, id: this.maxId++ };
         this.list.push(item); 
         this.save();
+        this.issueCount.next(this.list.length)
         return this.maxId - 1;
-    }
-
-    updateItem(id: number, updates: Partial<Issue>) {
-        const index = this.list.findIndex(item => item.id == id);
-        if(index == -1)
-            return;
-
-        this.list[index] = { ...this.list[index], ...updates};
-        this.save();
     }
 
     deleteItem(id: number) {
         this.list = this.list.filter(item => item.id !== id)
+        this.issueCount.next(this.list.length)
         this.save();
     }
 }

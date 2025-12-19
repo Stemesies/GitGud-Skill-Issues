@@ -1,0 +1,21 @@
+<div style="display: flex;">
+    <img class="pfp" src="{{issue!.owner.pfp}}" style="margin-right: 1rem;">
+    <div class="comment-body">
+        <div class="comment-header" style="gap: 3px;">
+            <span style="font-weight: 500;">{{issue!.owner.username}}</span>
+            <span style="color: #9198a1; font-weight: 400;"> opened </span>
+            <!-- <relative-time datetime="{{getDatetime()}}">{{getDatetime()}}</relative-time> -->
+        </div>
+        @if (issue?.description == "") {
+            <p class="comment-content-body" style="font-style: italic; color: #9198a1;">
+                No description provided
+            </p>
+        } @else {
+            <p class="comment-content-body">
+                {{issue?.description}}
+            </p>
+        }
+    </div>
+</div>
+
+<history-item *ngFor="let h of issue?.history" [item]="h"/>

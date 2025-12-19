@@ -46,7 +46,11 @@ export class IssuesList implements OnInit {
     assigneeList: Account[] = []
 
     @ViewChild(GitGudHeader) ggHeader!: GitGudHeader;
-    constructor(private issueTrackerService: IssueTrackerService) {}
+
+    issueTrackerService: IssueTrackerService
+    constructor(issueTrackerService: IssueTrackerService) {
+        this.issueTrackerService = issueTrackerService
+    }
 
     ngOnInit(): void {
         this.issueTrackerService.load()

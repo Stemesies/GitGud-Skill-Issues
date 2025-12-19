@@ -55,7 +55,10 @@ export class IssueCreator implements OnInit, AfterViewInit {
 
     triedToSaveWithoutName: boolean = false
 
-    constructor(private issueTrackerService: IssueTrackerService) {}
+    issueTrackerService: IssueTrackerService
+    constructor(issueTrackerService: IssueTrackerService) {
+        this.issueTrackerService = issueTrackerService
+    }
 
     ngOnInit(): void {
         this.issueTrackerService.load()

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { AccountLogger } from "../services/AccountLogger";
@@ -13,7 +13,10 @@ import { Observable, of } from "rxjs";
     styleUrls: ['../layout/gitGudHeader/l.scss']
 })
 
-export class GitGudHeader {
+export class GitGudHeader implements OnInit {
+
+    @Input() issueCount$!: Observable<number>;
+    issueCount: number = 0;
 
     triedToSaveWithoutName: boolean = false
     account: Account | undefined = undefined
@@ -30,8 +33,16 @@ export class GitGudHeader {
         this.account = accountLogger.current;
     }
 
+    ngOnInit(): void {
+        this.issueCount$.subscribe(it=> {
+            console.log("GitGud Header: updated Issue Count to ", it)
+            this.issueCount = it
+        })
+    }
+
     logIn() {
         if(this.state != 'login') {
+            this.error = ""
             this.state = 'login'
             return;
         }
@@ -40,11 +51,16 @@ export class GitGudHeader {
         if(this.username.length == 0)
             return;
         this.account = this.accountLogger.logIn(this.username)
+
+        if(this.account == undefined)
+            this.error = 'Unknown user.'
+
         this.state = 'none'
     }
 
     register() {
         if(this.state != 'register') {
+            this.error = ""
             this.state = 'register'
             return;
         }
@@ -57,9 +73,9 @@ export class GitGudHeader {
         this.account = this.accountLogger.register(this.username, this.pfp)
         if(this.account == undefined)
             this.error = 'Username already exists.'
-        else {
-            this.state = 'none'
-        }
+        
+        this.state = 'none'
+        
     }
 
     logOut() {
