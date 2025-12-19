@@ -10,6 +10,7 @@ import { AccountLogger } from "../services/AccountLogger";
 import { IssueTrackerService } from "../services/IssueTrackerService";
 import { Observable } from "rxjs";
 import { Account } from "../model/Account";
+import { IssueLogger } from "../services/IssueLogger";
 
 @Component({
     selector: 'issue-right-block-settings',
@@ -35,12 +36,15 @@ export class issueRightBlockSettings implements OnInit {
 
     showDeletionConfirmation = false
     
-    constructor(private issueTrackerService: IssueTrackerService) { }
+    constructor(private issueTrackerService: IssueTrackerService, private issueLogger: IssueLogger) {
+        issueLogger.link(issueTrackerService)
+     }
 
     ngOnInit(): void {
         console.log("Issue exists? ", this.issueExists())
         this.accountLogger$.subscribe((it)=> {
             this.accountLogger = it
+            this.issueLogger.linkAL(this.accountLogger)
             this.search()
             this.assigneeSelected = []
             this.issue.assignees.forEach(it=> this.assigneeSelected.push(it))
@@ -62,26 +66,15 @@ export class issueRightBlockSettings implements OnInit {
             return;
         }
         console.log("Assigning yourself")
-        
-        var history: History = {
-            type: HistoryTypes.Assign,
-            created: Date.now(),
-            owner: this.accountLogger!.current!,
-            data: {
-                added: [],
-                removed: [],
-                selfAssign: true
-            }
-        }
+
         this.assigneeSelected.push(this.accountLogger!.current!)
-        this.issue!.assignees.push(this.accountLogger!.current!)
-        this.issue!.history.push(history)
+
         if(this.issueExists()) {
-            this.issueTrackerService.save()
+            this.issueLogger.assignYourself(<Issue> this.issue!)
         } else {
+            this.issue!.assignees.push(this.accountLogger!.current!)
             console.log("Issue does not exist. Not saving.")
         }
-        
     }
 
     issueExists() {
@@ -104,11 +97,10 @@ export class issueRightBlockSettings implements OnInit {
 
     assignee() {
         if(!this.showAssigneeDropdown) {
-            if(this.accountLogger?.current != undefined) {
+            if(this.accountLogger?.current != undefined)
                 this.showAssigneeDropdown = true
-            } else {
+            else
                 console.log("Not logged in")
-            }
             return
         }
         this.showAssigneeDropdown = false
@@ -116,42 +108,12 @@ export class issueRightBlockSettings implements OnInit {
         if(!this.issueExists()) {
             this.issue.history = this.issue.history.filter(it=>it.type != HistoryTypes.Assign)
             this.issue.assignees = []
-        }
-
-        var added: Account[] = []
-        var removed: Account[] = []
-
-        this.assigneeSelected.forEach(neww => { 
-            if(!this.issue.assignees.find(it=>it.username == neww.username)) added.push(neww)
-        })
-        this.issue.assignees.forEach(neww => { 
-            if(!this.assigneeSelected.find(it=>it.username == neww.username)) removed.push(neww)
-        })
-
-        console.log("Added: ", added)
-        console.log("Removed: ", removed)
-
-        if(added.length != 0 || removed.length != 0) {
-            var history: History = {
-                type: HistoryTypes.Assign,
-                created: Date.now(),
-                owner: this.accountLogger!.current!,
-                data: {
-                    added: added,
-                    removed: removed,
-                    selfAssign: false
-                }
-            }
-            this.issue!.history.push(history)
-        }
-
-        this.issue.assignees = []
-        this.assigneeSelected.forEach(it=> this.issue.assignees.push(it))
-        if(this.issueExists()) {
-            this.issueTrackerService.save()
-        } else {
+            this.assigneeSelected.forEach(it=> this.issue.assignees.push(it))
             console.log("Issue does not exist. Not saving.")
+        } else {
+            this.issueLogger.assignee(<Issue> this.issue!, this.assigneeSelected)
         }
+
     }
 
     getParticipants() {

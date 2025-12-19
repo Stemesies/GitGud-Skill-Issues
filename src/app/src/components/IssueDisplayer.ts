@@ -13,6 +13,8 @@ import { HistoryTypes } from "../model/HistoryTypes";
 import { HistoryItem } from "./HistoryItem";
 import { Observable, Subject } from "rxjs";
 import { AccountLogger } from "../services/AccountLogger";
+import { Title } from "@angular/platform-browser";
+import { IssueLogger } from "../services/IssueLogger";
 
 @Component({
     selector: 'issues-displayer',
@@ -42,8 +44,9 @@ export class IssueDisplayer implements AfterViewInit {
 
     @ViewChild(GitGudHeader) ggHeader!: GitGudHeader;
 
-    constructor(private issueTrackerService: IssueTrackerService, private changeDetectorRef: ChangeDetectorRef) {
+    constructor(private issueLogger: IssueLogger, private issueTrackerService: IssueTrackerService, private changeDetectorRef: ChangeDetectorRef, private titleManager: Title) {
         this.issueTrackerService.load()
+        issueLogger.link(issueTrackerService)
         this.activatedRoute.params.subscribe((params) => {
             this.issueId = params['id'];
             this.issue = this.issueTrackerService.list.find(it=>it.id == this.issueId);
@@ -55,11 +58,14 @@ export class IssueDisplayer implements AfterViewInit {
 
             this.closureType = this.issue.status == IssueStatus.Open? 'close' : 'reopen'
             this.newName = this.issue.title
+            titleManager.setTitle(this.issue.title + " · " + "Issue #" + this.issue.id)
 
         });
     }
 
     ngAfterViewInit(): void {
+        this.issueLogger.linkAL(this.ggHeader.accountLogger)
+
         this.ggHeader.accountLogger.current$
             .subscribe( (it)=> {
                 
@@ -89,20 +95,9 @@ export class IssueDisplayer implements AfterViewInit {
             return
         }
 
-        console.log("Renaming to " + this.issue)
-        var history: History = {
-            type: HistoryTypes.Rename,
-            created: Date.now(),
-            owner: this.account!,
-            data: {
-                oldName: this.issue!.title,
-                newName: this.newName
-            }
-        }
-        this.issue!.history.push(history)
-        this.issue!.title = this.newName;
-        this.issueTrackerService.save()
+        this.issueLogger.rename(this.issue!, this.newName)
         this.renaming = false
+        this.titleManager.setTitle(this.issue!.title + " · " + "Issue #" + this.issue!.id)
     }
 
     
@@ -119,18 +114,9 @@ export class IssueDisplayer implements AfterViewInit {
     }
 
     postComment() {
-        console.log("Commenting to " + this.issue)
-        var history: History = {
-            type: HistoryTypes.Comment,
-            created: Date.now(),
-            owner: this.account!,
-            data: {
-                content: this.comment
-            }
-        }
-        this.issue!.history.push(history)
+        this.issueLogger.postComment(this.issue!, this.comment)
+
         this.comment = ""
-        this.issueTrackerService.save()
     }
 
     closeIssue() {
@@ -143,20 +129,8 @@ export class IssueDisplayer implements AfterViewInit {
         else if(this.closureType == 'reopen')
             newStatus = IssueStatus.Open;
 
-        console.log("Closing issue: " + newStatus.toString())
-
-        var history: History = {
-            type: HistoryTypes.Closure,
-            created: Date.now(),
-            owner: this.account!,
-            data: {
-                newStatus: newStatus
-            }
-        }
-        this.issue!.status = newStatus
-        this.issue!.history.push(history)
-        this.issueTrackerService.save()
-
+        this.issueLogger.closeIssue(this.issue!, newStatus)
+        
         this.closureType = this.issue!.status == IssueStatus.Open? 'close' : 'reopen'
     }
 }

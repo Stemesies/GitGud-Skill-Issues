@@ -134,7 +134,7 @@
                                 </svg>
                                 <span class="closure-dropdown-title">Reopen issue</span>
                             </button>
-                            <div class="closure-dropdown-separator"></div>
+                            <div class="closure-dropdown-separator" *ngIf="!this.isOpen()"></div>
                             <button class="closure-dropdown trans" (click)="closureType = 'close'; closureDropdownShow = false" *ngIf="!this.isClosed()">
                                 <svg>
                                     @if (closureType == "close") {
@@ -150,7 +150,7 @@
                                     <span class="closure-dropdown-desc">Done, closed, fixed, resolved</span>
                                 </div>
                             </button>
-                            <div class="closure-dropdown-separator"></div>
+                            <div class="closure-dropdown-separator" *ngIf="!this.isClosed()"></div>
                             <button class="closure-dropdown trans" (click)="closureType = 'wontfix'; closureDropdownShow = false" *ngIf="!this.isNotPlanned()">
                                 <svg>
                                     @if (closureType == "wontfix") {
