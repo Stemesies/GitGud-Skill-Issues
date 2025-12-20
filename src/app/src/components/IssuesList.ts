@@ -12,6 +12,7 @@ import { Label } from "../model/Label";
 import { PriorityTypes } from "../model/PriorityTypes";
 import { HistoryTypes } from "../model/HistoryTypes";
 import { LabelService } from "../services/LabelService";
+import { ToastService } from "../services/ToastService";
 
 @Component({
     selector: 'issues-list',
@@ -52,7 +53,7 @@ export class IssuesList implements OnInit {
 
     issueTrackerService: IssueTrackerService
     labelService: LabelService
-    constructor(issueTrackerService: IssueTrackerService, labelService: LabelService) {
+    constructor(issueTrackerService: IssueTrackerService, labelService: LabelService, private toastService: ToastService) {
         this.issueTrackerService = issueTrackerService
         this.labelService = labelService
     }
@@ -73,6 +74,19 @@ export class IssuesList implements OnInit {
 
     isLabelSelected(prof: Label) {
         return this.filterLabels.find(it=> it.id == prof.id)
+    }
+
+    deleteCurrentAccount() {
+        var al = this.ggHeader.accountLogger
+        if(al.current) {
+            al.deleteItem(al.current.username)
+            this.toastService.showToast("Deleted account " + al.current.username)
+            al.current = undefined
+            al.save()
+            
+        } else {
+            this.toastService.showToast("Not logged in")
+        }
     }
 
     labelAddOrRemove(account: Label): void {
@@ -223,10 +237,13 @@ export class IssuesList implements OnInit {
         this.load();
     }
 
-     reset() {
+    reset() {
         this.issueTrackerService.list = []
         this.issueTrackerService.maxId = 1
         this.issueTrackerService.save()
+        this.labelService.list = []
+        this.labelService.maxId = 1
+        this.labelService.save()
     }
 
 }

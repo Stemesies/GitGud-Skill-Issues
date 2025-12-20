@@ -12,6 +12,8 @@ export class RelativeTime {
         var deltaHours = n.getHours()-d.getHours()
         var deltaMinutes = n.getMinutes()-d.getMinutes()
         var deltaSeconds = n.getSeconds()-d.getSeconds()
+
+        //Behold, Yandere dev code
         
         if(deltaYear >= 1) {
             return deltaYear + " years ago"

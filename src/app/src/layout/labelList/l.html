@@ -89,7 +89,7 @@
                     </div>
                 </div>
             </div>
-            <label-item *ngFor="let item of filteredList" [labelService]="labelService" [item]="item" (edit)="editLabel(item)" (delete)="labelToEdit=item; deletingLabel=true"/>
+            <label-item *ngFor="let item of filteredList" [labelService]="labelService" [issues]="countIssues(item)" [item]="item" (edit)="editLabel(item)" (delete)="labelToEdit=item; deletingLabel=true"/>
             <div class="list" *ngIf="filteredList.length == 0">
                 <div class="no-results">
                     <h3 class="no-results">No results</h3>

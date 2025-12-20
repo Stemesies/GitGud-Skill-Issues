@@ -270,9 +270,19 @@
                 </div>
             </div>
         </div>
-         <button class="reset-button" (click)="reset()">
-                <span>Reset</span>
-            </button>
+        
+        <div>
+            <span style="font-weight: 600; color: #fa5e55; margin-top: 64px;">You definetely shouldn't press these buttons.</span>
+            <div style="display: flex; justify-content: center; gap: 8px;">
+                <button class="reset-button" (click)="reset()">
+                    <span>Reset</span>
+                </button>
+                <button class="reset-button" (click)="deleteCurrentAccount()">
+                    <span>Delete current account</span>
+                </button>
+
+            </div>
+        </div>
     </div>
 
     

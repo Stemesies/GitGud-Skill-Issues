@@ -110,7 +110,7 @@ export class IssueLogger {
         this.issueTrackerService!.save()
     }
 
-    changePriority(issue: Issue, newPriority: PriorityTypes) {
+    changePriority(issue: Issue | Omit<Issue, 'id'>, newPriority: PriorityTypes) {
         if(issue.priority == undefined)
             issue.priority = PriorityTypes.Average
 
@@ -131,12 +131,20 @@ export class IssueLogger {
                 newPriority: newPriority
             }
         }
+        if(!this.issueExists(issue)) {
+            issue.history = issue.history.filter(it=>it.type != history.type)
+        }
         issue.priority = newPriority
         issue.history.push(history)
-        this.issueTrackerService!.save()
+
+        if(this.issueExists(issue))
+            this.issueTrackerService!.save()
+        else {
+            console.log("Not saving: issue not exists")
+        }
     }
 
-    assignYourself(issue: Issue) {
+    assignYourself(issue: Issue | Omit<Issue, 'id'>) {
         if(!this.requireServiceConnection())
             return
 
@@ -149,15 +157,33 @@ export class IssueLogger {
                 removed: [],
                 selfAssign: true
             }
+            
         }
+
+        if(!this.issueExists(issue)) {
+            issue.history = issue.history.filter(it=>it.type != history.type)
+        }
+
         issue.assignees.push(this.accountLogger!.current!)
         issue.history.push(history)
-        this.issueTrackerService!.save()
+
+        if(this.issueExists(issue))
+            this.issueTrackerService!.save()
+        else {
+            console.log("Not saving: issue not exists")
+        }
     }
 
-    assignee(issue: Issue, newList: Account[]) {
+     issueExists(issue: Issue | Omit<Issue, 'id'>) {
+        return (<Issue> issue).id !== undefined
+    }
+
+    assignee(issue: Issue | Omit<Issue, 'id'>, newList: Account[]) {
         if(!this.requireServiceConnection())
             return
+
+        if(!this.issueExists(issue))
+            issue.assignees = []
 
         var added: Account[] = []
         var removed: Account[] = []
@@ -184,19 +210,31 @@ export class IssueLogger {
                     selfAssign: false
                 }
             }
+
+            if(!this.issueExists(issue)) {
+                issue.history = issue.history.filter(it=>it.type != history.type)
+            }
+
             issue.history.push(history)
         }
 
         issue.assignees = []
         newList.forEach(it=> issue.assignees.push(it))
-        this.issueTrackerService!.save()
+        if(this.issueExists(issue))
+            this.issueTrackerService!.save()
+        else {
+            console.log("Not saving: issue not exists")
+        }
         
     }
 
 
-    label(issue: Issue, newList: number[]) {
+    label(issue: Issue | Omit<Issue, 'id'>, newList: number[]) {
         if(!this.requireServiceConnection())
             return
+
+        if(!this.issueExists(issue))
+            issue.labels = []
 
         var added: number[] = []
         var removed: number[] = []
@@ -222,12 +260,21 @@ export class IssueLogger {
                     removed: removed
                 }
             }
+
+            if(!this.issueExists(issue)) {
+                issue.history = issue.history.filter(it=>it.type != history.type)
+            }
+
             issue.history.push(history)
         }
 
         issue.labels = []
         newList.forEach(it=> issue.labels.push(it))
-        this.issueTrackerService!.save()
+        if(this.issueExists(issue))
+            this.issueTrackerService!.save()
+        else {
+            console.log("Not saving: issue not exists")
+        }
         
     }
 }

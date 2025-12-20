@@ -95,12 +95,7 @@ export class issueRightBlockSettings implements OnInit {
 
         this.assigneeSelected.push(this.accountLogger!.current!)
 
-        if(this.issueExists()) {
-            this.issueLogger.assignYourself(<Issue> this.issue!)
-        } else {
-            this.issue!.assignees.push(this.accountLogger!.current!)
-            console.log("Issue does not exist. Not saving.")
-        }
+        this.issueLogger.assignYourself(this.issue!)
     }
 
     issueExists() {
@@ -164,12 +159,8 @@ export class issueRightBlockSettings implements OnInit {
             }
         }
 
-        if(!this.issueExists()) {
-            this.issue.priority = priority
-            console.log("Issue does not exist. Not saving.")
-        } else {
-            this.issueLogger.changePriority(<Issue> this.issue!, priority)
-        }
+        this.issueLogger.changePriority(this.issue!, priority)
+
         this.toastService.showToast("Successfully updated priority")
 
     }
@@ -186,13 +177,8 @@ export class issueRightBlockSettings implements OnInit {
         }
         this.showLabelDropdown = false
 
-        if(!this.issueExists()) {
-            this.issue.labels = []
-            this.labelsSelected.forEach(it=> this.issue.labels.push(it))
-            console.log("Issue does not exist. Not saving.")
-        } else {
-            this.issueLogger.label(<Issue> this.issue!, this.labelsSelected)
-        }
+        this.issueLogger.label(this.issue!, this.labelsSelected)
+
         this.toastService.showToast("Successfully updated label list")
     }
 
@@ -208,13 +194,8 @@ export class issueRightBlockSettings implements OnInit {
         }
         this.showAssigneeDropdown = false
 
-        if(!this.issueExists()) {
-            this.issue.assignees = []
-            this.assigneeSelected.forEach(it=> this.issue.assignees.push(it))
-            console.log("Issue does not exist. Not saving.")
-        } else {
-            this.issueLogger.assignee(<Issue> this.issue!, this.assigneeSelected)
-        }
+        this.issueLogger.assignee(this.issue!, this.assigneeSelected)
+
         this.toastService.showToast("Successfully updated assignee list")
 
     }

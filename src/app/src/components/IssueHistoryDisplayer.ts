@@ -23,6 +23,7 @@ export class IssueHistoryDisplayer {
         return  RelativeTime.format(this.issue!.created)
     }
     getDatetimeFormatted() {
-        return new Date(this.issue!.created).toString()
+        var date = new Date(this.issue!.created);
+        return date.toLocaleDateString() + " " + date.toLocaleTimeString()
     }
 }

@@ -34,7 +34,8 @@ export class HistoryItem {
         return  RelativeTime.format(this.item.created)
     }
     getDatetimeFormatted() {
-        return new Date(this.item.created).toString()
+        var date = new Date(this.item.created);
+        return date.toLocaleDateString() + " " + date.toLocaleTimeString()
     }
 
     isComment() {

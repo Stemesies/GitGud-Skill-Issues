@@ -23,6 +23,8 @@ export class Toast implements OnInit, OnDestroy {
     ngOnInit() {
         this.sub=this.toastService.shouldShow$.subscribe(it=>{
             console.log("IM KILLING MYSELF: ", it.shouldShow)
+            this.show = false
+            this.changeDetectorRef.detectChanges()
             this.show = it.shouldShow
             this.content = it.content
             this.changeDetectorRef.detectChanges()

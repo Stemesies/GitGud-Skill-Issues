@@ -4,7 +4,26 @@
 }
 
 .pos {
+    display: flex;
     position: absolute;
-    left: calc(100vh - 300px);
+    width: 100%;
+    height: 32px;
+    justify-content: center;
     bottom: 64px;
+}
+
+.dialog {
+    position: fixed;
+    margin: 0 auto;
+    opacity: 1;
+    transition: opacity 200ms ease-in;
+    @starting-style {
+        opacity: 0;
+    }
+}
+
+.leaving {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 500ms ease-out, transform 500ms ease-out;
 }

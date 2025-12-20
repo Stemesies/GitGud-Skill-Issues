@@ -28,10 +28,12 @@ export class GitGudHeader implements OnInit {
     pfp: string = ""
     error: string = ""
     accountLogger: AccountLogger
+    toastService: ToastService
 
     state: 'register' | 'login' | 'none' = 'none'
 
-    constructor(accountLogger: AccountLogger, private toastService: ToastService) {
+    constructor(accountLogger: AccountLogger, toastService: ToastService) {
+        this.toastService = toastService
         this.accountLogger = accountLogger;
         accountLogger.load()
         this.account = accountLogger.current;
