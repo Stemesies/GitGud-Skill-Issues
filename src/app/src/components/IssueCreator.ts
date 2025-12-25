@@ -96,6 +96,10 @@ export class IssueCreator implements OnInit, AfterViewInit {
         
         
         this.issue.owner = this.account;
+        this.issue.created = Date.now();
+
+        this.issue.history.forEach(it=>it.created=Date.now())
+
         var id = this.issueTrackerService.addItem(this.issue)
         if(this.createMore) {
             this.issue = {
